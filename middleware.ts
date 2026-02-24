@@ -1,21 +1,20 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
-
-const hasValidClerkKey =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith("pk_");
-
-export default hasValidClerkKey
-  ? clerkMiddleware(async (auth, req) => {
-      if (isProtectedRoute(req)) {
-        await auth.protect();
-      }
-    })
-  : function noopMiddleware(_req: NextRequest) {
-      return NextResponse.next();
-    };
+export default function middleware(_req: NextRequest) {
+  // Clerk middleware is disabled until real API keys are configured.
+  // To enable auth:
+  // 1. Add real Clerk keys to Vercel environment variables
+  // 2. Replace this file with:
+  //
+  //    import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+  //    const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
+  //    export default clerkMiddleware(async (auth, req) => {
+  //      if (isProtectedRoute(req)) await auth.protect();
+  //    });
+  //
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [
