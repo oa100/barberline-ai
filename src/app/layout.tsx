@@ -14,13 +14,15 @@ export const metadata: Metadata = {
     "AI voice agent that answers calls, books appointments, and manages your barbershop 24/7.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider dynamic>
       <html lang="en">
         <body className={`${inter.variable} font-sans antialiased`}>
           {children}
