@@ -1,0 +1,40 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { validateVapiRequest, unauthorizedResponse } from "./validate";
+import { NextRequest } from "next/server";
+
+describe("validateVapiRequest", () => {
+  beforeEach(() => {
+    vi.stubEnv("VAPI_SERVER_SECRET", "test-secret-123");
+  });
+
+  it("returns true when secret matches", () => {
+    const req = new NextRequest("http://localhost/api/vapi/webhook", {
+      headers: { "x-vapi-secret": "test-secret-123" },
+    });
+
+    expect(validateVapiRequest(req)).toBe(true);
+  });
+
+  it("returns false when secret is wrong", () => {
+    const req = new NextRequest("http://localhost/api/vapi/webhook", {
+      headers: { "x-vapi-secret": "wrong-secret" },
+    });
+
+    expect(validateVapiRequest(req)).toBe(false);
+  });
+
+  it("returns false when no secret header", () => {
+    const req = new NextRequest("http://localhost/api/vapi/webhook");
+    expect(validateVapiRequest(req)).toBe(false);
+  });
+});
+
+describe("unauthorizedResponse", () => {
+  it("returns 401 with error message", async () => {
+    const response = unauthorizedResponse();
+    expect(response.status).toBe(401);
+
+    const body = await response.json();
+    expect(body).toEqual({ error: "Unauthorized" });
+  });
+});
