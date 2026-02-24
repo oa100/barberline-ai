@@ -24,26 +24,47 @@ const steps = [
 
 export default function HowItWorksPage() {
   return (
-    <section className="py-20">
-      <div className="container mx-auto px-4">
+    <section className="relative py-28">
+      {/* Background accent */}
+      <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-gold/3 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="container relative mx-auto px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold animate-fade-in">
+            Get Started
+          </span>
+          <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
             How it works
           </h1>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="mt-6 text-lg text-warm-gray animate-fade-in-up stagger-2">
             Get your AI receptionist up and running in three simple steps.
           </p>
+          <div className="gold-line mx-auto mt-8 w-24" />
         </div>
 
-        <div className="mx-auto mt-16 max-w-2xl space-y-12">
-          {steps.map((step) => (
-            <div key={step.number} className="flex gap-6">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
-                {step.number}
+        <div className="mx-auto mt-20 max-w-2xl space-y-0">
+          {steps.map((step, i) => (
+            <div
+              key={step.number}
+              className={`animate-slide-in-left stagger-${i + 2} relative flex gap-8 pb-16 last:pb-0`}
+            >
+              {/* Vertical connector line */}
+              {step.number < 3 && (
+                <div className="absolute left-[23px] top-14 bottom-0 w-px bg-gradient-to-b from-gold/30 to-transparent" />
+              )}
+
+              {/* Number circle */}
+              <div className="relative flex h-12 w-12 shrink-0 items-center justify-center border border-gold/40 bg-gold/10">
+                <span className="font-serif text-xl text-gold">
+                  {step.number}
+                </span>
               </div>
-              <div>
-                <h2 className="text-xl font-semibold">{step.title}</h2>
-                <p className="mt-2 text-muted-foreground">
+
+              <div className="pt-1">
+                <h2 className="font-serif text-2xl text-cream">
+                  {step.title}
+                </h2>
+                <p className="mt-3 text-warm-gray leading-relaxed">
                   {step.description}
                 </p>
               </div>
@@ -51,10 +72,16 @@ export default function HowItWorksPage() {
           ))}
         </div>
 
-        <div className="mt-16 text-center">
-          <Button asChild size="lg">
+        <div className="mt-20 text-center">
+          <Button
+            asChild
+            size="lg"
+            className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
+          >
             <Link href="/signup">Get Started Now</Link>
           </Button>
+
+          <div className="mx-auto mt-12 barber-stripe-thin h-1 w-32 opacity-40 rounded-full" />
         </div>
       </div>
     </section>

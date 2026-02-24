@@ -87,7 +87,7 @@ test.describe("Navigation", () => {
     await page.goto(BASE_URL);
     const footer = page.locator("footer");
     await expect(footer).toBeVisible();
-    await expect(footer.getByText("BarberLine AI")).toBeVisible();
+    await expect(footer.getByText("BarberLine AI", { exact: true }).first()).toBeVisible();
     await expect(footer.getByText("How It Works")).toBeVisible();
     await expect(footer.getByText("Pricing")).toBeVisible();
   });

@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { Phone, Calendar, MessageSquare, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 const features = [
   {
@@ -39,82 +33,159 @@ export default function LandingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="py-20 md:py-32">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
-            Never miss a booking again
+      <section className="relative overflow-hidden py-28 md:py-40">
+        {/* Subtle radial glow behind hero */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-gold/5 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="container relative mx-auto px-6 text-center">
+          {/* Eyebrow */}
+          <div className="animate-fade-in stagger-1 mb-8 inline-flex items-center gap-3 rounded-none border border-gold/20 bg-gold/5 px-5 py-2">
+            <div className="barber-stripe-thin h-3 w-3 rounded-full" />
+            <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
+              AI-Powered Receptionist for Barbershops
+            </span>
+          </div>
+
+          <h1 className="animate-fade-in-up stagger-2 mx-auto max-w-4xl font-serif text-5xl leading-tight tracking-tight md:text-7xl lg:text-8xl">
+            Never miss a{" "}
+            <span className="text-shimmer">booking</span>{" "}
+            again
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+
+          <p className="animate-fade-in-up stagger-3 mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-warm-gray md:text-xl">
             BarberLine AI answers your phone calls, books appointments, and
             sends confirmations — so you can focus on cutting hair.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button size="lg" asChild>
+
+          <div className="animate-fade-in-up stagger-4 mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Button
+              size="lg"
+              asChild
+              className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-10 py-6 text-sm uppercase tracking-[0.15em]"
+            >
               <Link href="/signup">Start Free Trial</Link>
             </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="#how-it-works">See How It Works</Link>
+            <Button
+              size="lg"
+              variant="outline"
+              asChild
+              className="rounded-none border-gold/30 text-cream hover:bg-gold/10 hover:border-gold/50 px-10 py-6 text-sm uppercase tracking-[0.15em]"
+            >
+              <Link href="/how-it-works">See How It Works</Link>
             </Button>
           </div>
         </div>
+
+        {/* Decorative barber stripe at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 barber-stripe h-1 opacity-40" />
       </section>
 
       {/* Problem */}
-      <section className="border-y bg-muted/40 py-20">
-        <div className="container mx-auto max-w-3xl px-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+      <section className="relative border-y border-gold/10 bg-[#0E0E0E] py-24">
+        <div className="container mx-auto max-w-3xl px-6 text-center">
+          <h2 className="animate-fade-in-up font-serif text-3xl leading-snug tracking-tight md:text-5xl text-cream">
             You&apos;re mid-cut. The phone rings...
           </h2>
-          <p className="mt-6 text-lg text-muted-foreground">
+          <p className="mt-8 text-lg leading-relaxed text-warm-gray">
             Independent barbers and small shops miss{" "}
-            <span className="font-semibold text-foreground">
+            <span className="font-semibold text-gold">
               40-60% of incoming calls
             </span>{" "}
             because they&apos;re busy with clients. Every missed call is a lost
             customer and lost revenue.
           </p>
+
+          {/* Stats row */}
+          <div className="mt-14 grid grid-cols-3 gap-8">
+            <div className="animate-fade-in-up stagger-1">
+              <div className="font-serif text-4xl text-gold md:text-5xl">60%</div>
+              <div className="mt-2 text-xs uppercase tracking-[0.2em] text-warm-gray">
+                Calls Missed
+              </div>
+            </div>
+            <div className="animate-fade-in-up stagger-2">
+              <div className="font-serif text-4xl text-gold md:text-5xl">$1,200</div>
+              <div className="mt-2 text-xs uppercase tracking-[0.2em] text-warm-gray">
+                Lost Monthly
+              </div>
+            </div>
+            <div className="animate-fade-in-up stagger-3">
+              <div className="font-serif text-4xl text-gold md:text-5xl">24/7</div>
+              <div className="mt-2 text-xs uppercase tracking-[0.2em] text-warm-gray">
+                AI Coverage
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Features */}
-      <section id="how-it-works" className="py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center text-3xl font-bold tracking-tight md:text-4xl">
-            How It Works
-          </h2>
+      <section id="how-it-works" className="relative py-28">
+        {/* Background accent */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gold/3 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="container relative mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
+              Features
+            </span>
+            <h2 className="mt-4 font-serif text-3xl tracking-tight md:text-5xl text-cream">
+              Everything your shop needs
+            </h2>
+            <div className="gold-line mx-auto mt-6 w-24" />
+          </div>
+
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature) => (
-              <Card key={feature.title}>
-                <CardHeader>
-                  <feature.icon className="mb-2 size-10 text-primary" />
-                  <CardTitle>{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardHeader>
-              </Card>
+            {features.map((feature, i) => (
+              <div
+                key={feature.title}
+                className={`card-glow animate-fade-in-up stagger-${i + 1} group relative border border-gold/10 bg-[#111111] p-8 transition-all duration-300`}
+              >
+                {/* Icon */}
+                <div className="mb-6 flex h-12 w-12 items-center justify-center border border-gold/20 bg-gold/5">
+                  <feature.icon className="h-6 w-6 text-gold" />
+                </div>
+
+                <h3 className="text-lg font-semibold text-cream tracking-wide">
+                  {feature.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-warm-gray">
+                  {feature.description}
+                </p>
+
+                {/* Decorative corner */}
+                <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-gold/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-20 text-primary-foreground">
-        <div className="container mx-auto max-w-3xl px-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+      <section className="relative overflow-hidden py-28">
+        {/* Background diagonal stripe */}
+        <div className="absolute inset-0 barber-stripe opacity-[0.02]" />
+
+        <div className="container relative mx-auto max-w-3xl px-6 text-center">
+          <h2 className="font-serif text-3xl tracking-tight md:text-5xl text-cream">
             Ready to stop losing customers?
           </h2>
-          <p className="mt-4 text-lg text-primary-foreground/80">
+          <p className="mt-6 text-lg text-warm-gray leading-relaxed">
             Join hundreds of barbers who never miss a call. Start your free
             trial today.
           </p>
-          <div className="mt-8">
+          <div className="mt-10">
             <Button
               size="lg"
-              variant="secondary"
               asChild
+              className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
             >
               <Link href="/signup">Start Free Trial</Link>
             </Button>
           </div>
+
+          {/* Decorative barber stripe */}
+          <div className="mx-auto mt-16 barber-stripe-thin h-1 w-32 opacity-40 rounded-full" />
         </div>
       </section>
     </>

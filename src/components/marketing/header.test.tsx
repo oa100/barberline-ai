@@ -20,9 +20,9 @@ vi.mock("next/link", () => ({
 describe("Header", () => {
   it("renders logo with correct link", () => {
     render(<Header />);
-    const logo = screen.getByText("BarberLine AI");
-    expect(logo).toBeInTheDocument();
-    expect(logo.closest("a")).toHaveAttribute("href", "/");
+    const logoLink = screen.getByRole("link", { name: /BarberLine/i });
+    expect(logoLink).toBeInTheDocument();
+    expect(logoLink).toHaveAttribute("href", "/");
   });
 
   it("renders navigation links", () => {
