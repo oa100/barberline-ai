@@ -2,11 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import twilio from "twilio";
 import { createClient } from "@/lib/supabase/server";
 
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID!,
-  process.env.TWILIO_AUTH_TOKEN!
-);
-
 export async function POST(req: NextRequest) {
   try {
     const { to, shopId, startAt, customerName } = await req.json();
@@ -49,6 +44,11 @@ export async function POST(req: NextRequest) {
     });
 
     const message = `Hi ${customerName}! Your appointment at ${shop.name} is confirmed for ${dateStr} at ${timeStr}. Reply STOP to opt out.`;
+
+    const twilioClient = twilio(
+      process.env.TWILIO_ACCOUNT_SID!,
+      process.env.TWILIO_AUTH_TOKEN!
+    );
 
     await twilioClient.messages.create({
       body: message,
