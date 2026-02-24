@@ -21,6 +21,7 @@ vi.mock("@/lib/supabase/server", () => {
 // Import after mocks
 import { POST } from "./route";
 import { validateVapiRequest } from "@/lib/vapi/validate";
+// @ts-expect-error __mocks is injected by vi.mock factory above
 import { createClient, __mocks } from "@/lib/supabase/server";
 
 const mockValidate = vi.mocked(validateVapiRequest);

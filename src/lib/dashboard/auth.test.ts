@@ -17,6 +17,7 @@ vi.mock("@/lib/supabase/server", () => {
 
 import { getAuthenticatedShop } from "./auth";
 import { auth } from "@clerk/nextjs/server";
+// @ts-expect-error __mocks is injected by vi.mock factory above
 import { createClient, __mocks } from "@/lib/supabase/server";
 
 const mockAuth = vi.mocked(auth);
