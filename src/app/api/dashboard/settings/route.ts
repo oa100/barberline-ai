@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthenticatedShop } from "@/lib/dashboard/auth";
 import { z } from "zod";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 // List of common IANA timezones for validation
 function isValidTimezone(tz: string): boolean {
@@ -51,6 +52,9 @@ export async function PUT(req: NextRequest) {
   if (!shop) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const rl = rateLimit(`settings:${shop.id}`, { limit: 10, windowMs: 60_000 });
+  if (!rl.success) return rateLimitResponse();
 
   let body: Record<string, unknown>;
   try {

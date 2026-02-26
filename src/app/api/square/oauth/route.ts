@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 const SCOPES = [
   "APPOINTMENTS_READ",
@@ -14,6 +15,9 @@ export async function GET() {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const rl = rateLimit(`square-oauth:${userId}`, { limit: 5, windowMs: 60_000 });
+  if (!rl.success) return rateLimitResponse();
 
   const clientId = process.env.SQUARE_APP_ID!;
   const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/square/callback`;

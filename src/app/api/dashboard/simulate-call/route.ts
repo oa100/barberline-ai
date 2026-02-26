@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { processEndOfCallReport } from "@/lib/vapi/process-end-of-call";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 const SAMPLE_CALLERS = [
   { name: "Marcus Johnson", phone: "+12125551001" },
@@ -37,6 +38,9 @@ export async function POST(req: Request) {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const rl = rateLimit(`simulate-call:${userId}`, { limit: 5, windowMs: 60_000 });
+  if (!rl.success) return rateLimitResponse();
 
   const { shopId } = await req.json();
   if (!shopId) {
