@@ -33,11 +33,12 @@ export default async function DashboardPage() {
     .gte("created_at", startOfDay.toISOString())
     .lte("created_at", endOfDay.toISOString());
 
-  // Query today's bookings (created today)
+  // Query today's booked calls (calls with outcome = 'booked')
   const { count: bookedToday } = await supabase
-    .from("bookings")
+    .from("call_logs")
     .select("*", { count: "exact", head: true })
     .eq("shop_id", shop.id)
+    .eq("outcome", "booked")
     .gte("created_at", startOfDay.toISOString())
     .lte("created_at", endOfDay.toISOString());
 
