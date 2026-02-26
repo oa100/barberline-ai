@@ -32,6 +32,9 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     title: "BarberLine AI",
   },
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
