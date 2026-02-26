@@ -3,9 +3,7 @@ import {
   validateVapiRequest,
   unauthorizedResponse,
 } from "@/lib/vapi/validate";
-import { createSquareClient } from "@/lib/square/client";
-import { listServices } from "@/lib/square/catalog";
-import { getBusinessHours } from "@/lib/square/catalog";
+import { getBookingProvider } from "@/lib/booking/factory";
 import { createClient } from "@/lib/supabase/server";
 import { extractShopId } from "@/lib/vapi/extract-shop-id";
 
@@ -66,11 +64,11 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient();
     const { data: shop, error } = await supabase
       .from("shops")
-      .select("square_token, square_location, name")
+      .select("provider_type, provider_token, provider_location_id, name")
       .eq("id", shopId)
       .single();
 
-    if (error || !shop?.square_token || !shop?.square_location) {
+    if (error || !shop?.provider_token || !shop?.provider_location_id) {
       return Response.json({
         results: [
           {
@@ -81,11 +79,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const client = createSquareClient(shop.square_token);
+    const provider = getBookingProvider(shop);
 
     const [services, hours] = await Promise.all([
-      listServices(client, shop.square_location),
-      getBusinessHours(client, shop.square_location),
+      provider.getServices(),
+      provider.getBusinessHours(),
     ]);
 
     // Format services
@@ -94,7 +92,7 @@ export async function POST(req: NextRequest) {
         ? services
             .map(
               (s) =>
-                `${s.name} - $${s.priceAmount.toFixed(2)} (${s.durationMinutes} min)`
+                `${s.name} - ${s.priceDisplay} (${s.durationMinutes} min)`
             )
             .join("; ")
         : "No services listed";
@@ -103,9 +101,9 @@ export async function POST(req: NextRequest) {
     const hoursText =
       hours.length > 0
         ? hours
-            .map((p) => {
-              const day = DAY_NAMES[p.dayOfWeek || ""] || p.dayOfWeek;
-              return `${day}: ${formatTime(p.startLocalTime ?? undefined)} - ${formatTime(p.endLocalTime ?? undefined)}`;
+            .map((h) => {
+              const day = DAY_NAMES[h.dayOfWeek || ""] || h.dayOfWeek;
+              return `${day}: ${formatTime(h.openTime)} - ${formatTime(h.closeTime)}`;
             })
             .join("; ")
         : "Hours not available";
