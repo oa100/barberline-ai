@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Phone, Calendar, MessageSquare, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DashboardMockup } from "@/components/marketing/dashboard-mockup";
+import { Testimonials } from "@/components/marketing/testimonials";
 
 const features = [
   {
@@ -74,6 +76,9 @@ export default function LandingPage() {
               <Link href="/how-it-works">See How It Works</Link>
             </Button>
           </div>
+
+          {/* Dashboard preview */}
+          <DashboardMockup />
         </div>
 
         {/* Decorative barber stripe at bottom */}
@@ -160,6 +165,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Testimonials */}
+      <Testimonials />
 
       {/* CTA */}
       <section className="relative overflow-hidden py-28">
