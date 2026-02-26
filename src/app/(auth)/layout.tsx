@@ -14,7 +14,7 @@ export default function AuthLayout({
         {/* Logo / Brand */}
         <div className="mb-8 text-center">
           <Link href="/" className="inline-block">
-            <h1 className="font-serif text-3xl tracking-tight text-cream">
+            <h1 className="font-sans font-bold text-3xl tracking-tight text-cream">
               Barber<span className="text-gold">Line</span>{" "}
               <span className="text-warm-gray">AI</span>
             </h1>
