@@ -1,9 +1,6 @@
 import { SignIn } from "@clerk/nextjs";
+import { clerkAppearance } from "../../clerk-theme";
 
 export default function SignInPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <SignIn afterSignInUrl="/dashboard" />
-    </div>
-  );
+  return <SignIn afterSignInUrl="/dashboard" appearance={clerkAppearance} />;
 }

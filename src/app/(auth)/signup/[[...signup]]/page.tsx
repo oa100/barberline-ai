@@ -1,9 +1,8 @@
 import { SignUp } from "@clerk/nextjs";
+import { clerkAppearance } from "../../clerk-theme";
 
 export default function SignUpPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <SignUp afterSignUpUrl="/dashboard/onboarding" />
-    </div>
+    <SignUp afterSignUpUrl="/dashboard/onboarding" appearance={clerkAppearance} />
   );
 }
