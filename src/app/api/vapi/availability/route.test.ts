@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
+const { mockSingle, mockCheckAvailability } = vi.hoisted(() => ({
+  mockSingle: vi.fn(),
+  mockCheckAvailability: vi.fn(),
+}));
+
 vi.mock("@/lib/vapi/validate", () => ({
   validateVapiRequest: vi.fn(),
   unauthorizedResponse: () =>
@@ -8,22 +13,18 @@ vi.mock("@/lib/vapi/validate", () => ({
 }));
 
 vi.mock("@/lib/supabase/server", () => {
-  const mockSingle = vi.fn();
   const mockEq = vi.fn().mockReturnValue({ single: mockSingle });
   const mockSelect = vi.fn().mockReturnValue({ eq: mockEq });
   const mockFrom = vi.fn().mockReturnValue({ select: mockSelect });
   return {
     createClient: vi.fn().mockResolvedValue({ from: mockFrom }),
-    __mocks: { mockSingle },
   };
 });
 
-vi.mock("@/lib/square/client", () => ({
-  createSquareClient: vi.fn(),
-}));
-
-vi.mock("@/lib/square/availability", () => ({
-  searchAvailability: vi.fn().mockResolvedValue([]),
+vi.mock("@/lib/booking/factory", () => ({
+  getBookingProvider: vi.fn().mockReturnValue({
+    checkAvailability: mockCheckAvailability,
+  }),
 }));
 
 import { POST } from "./route";
@@ -37,51 +38,110 @@ function makeRequest(body: unknown) {
   });
 }
 
-describe("POST /api/vapi/availability - shopId validation", () => {
+function makeBody(params: Record<string, string>, metadataShopId = "shop-1") {
+  return {
+    message: {
+      functionCall: { parameters: params },
+      assistant: { metadata: { shopId: metadataShopId } },
+    },
+  };
+}
+
+const shopRow = {
+  provider_type: "square",
+  provider_token: "tok_123",
+  provider_location_id: "loc_456",
+  timezone: "America/New_York",
+};
+
+describe("POST /api/vapi/availability", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(validateVapiRequest).mockReturnValue(true);
+    mockSingle.mockResolvedValue({ data: shopRow, error: null });
+    mockCheckAvailability.mockResolvedValue([]);
   });
 
-  it("rejects when parameter shopId does not match metadata shopId", async () => {
+  it("returns 401 when Vapi request is invalid", async () => {
+    vi.mocked(validateVapiRequest).mockReturnValue(false);
+    const res = await POST(
+      makeRequest(makeBody({ date: "2026-03-01" }))
+    );
+    expect(res.status).toBe(401);
+  });
+
+  it("returns 403 when shopId mismatches metadata", async () => {
     const res = await POST(
       makeRequest({
         message: {
           functionCall: {
-            parameters: {
-              shopId: "attacker-shop",
-              date: "2026-03-01",
-            },
+            parameters: { shopId: "attacker-shop", date: "2026-03-01" },
           },
-          assistant: {
-            metadata: { shopId: "real-shop" },
-          },
+          assistant: { metadata: { shopId: "real-shop" } },
         },
       })
     );
-
     expect(res.status).toBe(403);
     const body = await res.json();
     expect(body.results[0].result).toContain("mismatch");
   });
 
-  it("uses metadata shopId when parameter shopId is missing", async () => {
-    const res = await POST(
-      makeRequest({
-        message: {
-          functionCall: {
-            parameters: {
-              date: "2026-03-01",
-            },
-          },
-          assistant: {
-            metadata: { shopId: "real-shop" },
-          },
-        },
-      })
-    );
+  it("returns 400 when date is missing", async () => {
+    const res = await POST(makeRequest(makeBody({})));
+    expect(res.status).toBe(400);
+  });
 
-    // Should not return 403 - should proceed with metadata shopId
-    expect(res.status).not.toBe(403);
+  it("calls provider.checkAvailability with date, serviceId, staffId", async () => {
+    mockCheckAvailability.mockResolvedValue([]);
+    const res = await POST(
+      makeRequest(
+        makeBody({
+          date: "2026-03-01",
+          serviceId: "svc-1",
+          staffId: "staff-1",
+        })
+      )
+    );
+    expect(res.status).toBe(200);
+    expect(mockCheckAvailability).toHaveBeenCalledWith({
+      date: "2026-03-01",
+      serviceId: "svc-1",
+      staffId: "staff-1",
+    });
+  });
+
+  it("returns formatted time slots in voice response", async () => {
+    mockCheckAvailability.mockResolvedValue([
+      { startAt: "2026-03-01T14:00:00Z", durationMinutes: 30 },
+      { startAt: "2026-03-01T15:00:00Z", durationMinutes: 30 },
+    ]);
+    const res = await POST(
+      makeRequest(makeBody({ date: "2026-03-01" }))
+    );
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.results[0].result).toContain("Available times on 2026-03-01");
+    expect(body.results[0].availableSlots).toHaveLength(2);
+  });
+
+  it("returns no-availability message when empty", async () => {
+    mockCheckAvailability.mockResolvedValue([]);
+    const res = await POST(
+      makeRequest(makeBody({ date: "2026-03-01" }))
+    );
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.results[0].result).toContain("no available time slots");
+    expect(body.results[0].availableSlots).toEqual([]);
+  });
+
+  it("handles shop not found gracefully", async () => {
+    mockSingle.mockResolvedValue({ data: null, error: { message: "not found" } });
+    const res = await POST(
+      makeRequest(makeBody({ date: "2026-03-01" }))
+    );
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.results[0].result).toContain("couldn't find the shop");
   });
 });

@@ -3,8 +3,7 @@ import {
   validateVapiRequest,
   unauthorizedResponse,
 } from "@/lib/vapi/validate";
-import { createSquareClient } from "@/lib/square/client";
-import { searchAvailability } from "@/lib/square/availability";
+import { getBookingProvider } from "@/lib/booking/factory";
 import { createClient } from "@/lib/supabase/server";
 import { extractShopId } from "@/lib/vapi/extract-shop-id";
 
@@ -33,7 +32,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { date, teamMemberId, serviceVariationId } = params;
+    const { date, serviceId, staffId } = params;
 
     if (!shopId || !date) {
       return Response.json(
@@ -52,11 +51,11 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient();
     const { data: shop, error } = await supabase
       .from("shops")
-      .select("square_token, square_location, timezone")
+      .select("provider_type, provider_token, provider_location_id, timezone")
       .eq("id", shopId)
       .single();
 
-    if (error || !shop?.square_token || !shop?.square_location) {
+    if (error || !shop?.provider_token || !shop?.provider_location_id) {
       return Response.json({
         results: [
           {
@@ -67,19 +66,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const client = createSquareClient(shop.square_token);
+    const provider = getBookingProvider(shop);
 
-    // Build date range for the requested day
-    const startDate = `${date}T00:00:00Z`;
-    const endDate = `${date}T23:59:59Z`;
-
-    const slots = await searchAvailability(client, {
-      locationId: shop.square_location,
-      startDate,
-      endDate,
-      serviceVariationId,
-      teamMemberId,
-    });
+    const slots = await provider.checkAvailability({ date, serviceId, staffId });
 
     if (slots.length === 0) {
       return Response.json({
