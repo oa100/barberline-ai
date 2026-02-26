@@ -3,6 +3,11 @@
 **Date:** February 25, 2026
 **Version:** 1.0
 **Status:** Draft for Review
+
+> **Strategic Decision (2026-02-26):** Prioritize shop owner (barbershop) experience first. Customers already interact via phone call + AI — no customer-facing app needed yet. Focus mobile effort on owner dashboard, real-time notifications, onboarding polish, and Square integration. Customer app deferred to Phase 2 once shop density justifies it.
+
+> **Strategic Decision (2026-02-26):** Multi-platform booking strategy. Do NOT lock into Square as the only booking provider. Ship with Square first (best API, zero barriers, already built), add Boulevard second (GraphQL, self-serve), pursue Booksy partnership once we have traction. Fresha/GlossGenius have no public APIs — dead ends for now. Vagaro requires enterprise sales contact. **Action:** Build a `BookingProvider` abstraction layer so the Vapi AI agent talks to a generic interface (`checkAvailability`, `createBooking`, `listServices`) and each platform is an adapter behind it. No "Plaid for bookings" aggregator exists — we build our own.
+
 **Prepared by:** Mobile Architecture & Product Strategy Team
 
 ---
