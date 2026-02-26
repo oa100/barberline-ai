@@ -37,7 +37,7 @@ export async function GET() {
     name: shop.name,
     timezone: shop.timezone,
     greeting: shop.greeting,
-    hasSquare: !!shop.square_token,
+    hasSquare: !!shop.provider_token,
     hasVapi: !!shop.vapi_agent_id,
     phoneNumber: shop.phone_number,
   });
@@ -97,7 +97,7 @@ export async function PUT(req: NextRequest) {
     name: data.name,
     timezone: data.timezone,
     greeting: data.greeting,
-    hasSquare: !!data.square_token,
+    hasSquare: !!data.provider_token,
     hasVapi: !!data.vapi_agent_id,
     phoneNumber: data.phone_number,
   });

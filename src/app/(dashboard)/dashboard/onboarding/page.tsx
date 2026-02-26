@@ -47,11 +47,11 @@ export default async function OnboardingPage() {
   }
 
   // If already fully set up, redirect to dashboard
-  if (shop.square_token && shop.vapi_agent_id) {
+  if (shop.provider_token && shop.vapi_agent_id) {
     redirect("/dashboard");
   }
 
-  const hasSquare = Boolean(shop.square_token);
+  const hasSquare = Boolean(shop.provider_token);
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">

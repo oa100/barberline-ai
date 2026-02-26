@@ -12,8 +12,6 @@ export interface Shop {
   clerk_user_id: string;
   name: string;
   phone_number: string | null;
-  square_token: string | null;
-  square_location: string | null;
   provider_type: string;
   provider_token: string | null;
   provider_location_id: string | null;
@@ -46,7 +44,6 @@ export interface Booking {
   id: string;
   shop_id: string;
   call_log_id: string | null;
-  square_booking_id: string | null;
   provider_booking_id: string | null;
   customer_name: string;
   customer_phone: string | null;
