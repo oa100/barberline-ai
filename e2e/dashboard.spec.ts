@@ -4,13 +4,10 @@ import { test, expect } from "@playwright/test";
 test.describe("Dashboard Overview", () => {
   test.beforeEach(async ({ page }) => {
     await setupClerkTestingToken({ page });
+    await page.goto("/sign-in");
     await clerk.signIn({
       page,
-      signInParams: {
-        strategy: "password",
-        identifier: process.env.E2E_CLERK_USER_USERNAME!,
-        password: process.env.E2E_CLERK_USER_PASSWORD!,
-      },
+      emailAddress: process.env.CLERK_USER_EMAIL!,
     });
   });
 
@@ -21,17 +18,17 @@ test.describe("Dashboard Overview", () => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
       "Welcome"
     );
-    await expect(page.getByText("Calls Today")).toBeVisible();
-    await expect(page.getByText("Booked Today")).toBeVisible();
-    await expect(page.getByText("Upcoming")).toBeVisible();
+    await expect(page.getByText("Calls Today", { exact: true })).toBeVisible();
+    await expect(page.getByText("Booked Today", { exact: true })).toBeVisible();
+    await expect(page.getByText("Upcoming", { exact: true })).toBeVisible();
   });
 
   test("simulate call increments Calls Today", async ({ page }) => {
     await page.goto("/dashboard");
-    await expect(page.getByText("Calls Today")).toBeVisible();
+    await expect(page.getByText("Calls Today", { exact: true })).toBeVisible();
 
     // Get the initial count from the stat card
-    const callsCard = page.locator("text=Calls Today").locator("..").locator("..");
+    const callsCard = page.getByText("Calls Today", { exact: true }).locator("..").locator("..");
     const initialText = await callsCard.getByText(/^\d+$/).first().textContent();
     const initialCount = parseInt(initialText || "0", 10);
 
@@ -52,11 +49,11 @@ test.describe("Dashboard Overview", () => {
 
   test("simulate booked call increments Booked Today", async ({ page }) => {
     await page.goto("/dashboard");
-    await expect(page.getByText("Booked Today")).toBeVisible();
+    await expect(page.getByText("Booked Today", { exact: true })).toBeVisible();
 
     // Get the initial booked count
     const bookedCard = page
-      .locator("text=Booked Today")
+      .getByText("Booked Today", { exact: true })
       .locator("..")
       .locator("..");
     const initialText = await bookedCard
@@ -108,13 +105,10 @@ test.describe("Dashboard Overview", () => {
 test.describe("Call Log Page", () => {
   test.beforeEach(async ({ page }) => {
     await setupClerkTestingToken({ page });
+    await page.goto("/sign-in");
     await clerk.signIn({
       page,
-      signInParams: {
-        strategy: "password",
-        identifier: process.env.E2E_CLERK_USER_USERNAME!,
-        password: process.env.E2E_CLERK_USER_PASSWORD!,
-      },
+      emailAddress: process.env.CLERK_USER_EMAIL!,
     });
   });
 
@@ -164,13 +158,10 @@ test.describe("Call Log Page", () => {
 test.describe("Dashboard Navigation", () => {
   test.beforeEach(async ({ page }) => {
     await setupClerkTestingToken({ page });
+    await page.goto("/sign-in");
     await clerk.signIn({
       page,
-      signInParams: {
-        strategy: "password",
-        identifier: process.env.E2E_CLERK_USER_USERNAME!,
-        password: process.env.E2E_CLERK_USER_PASSWORD!,
-      },
+      emailAddress: process.env.CLERK_USER_EMAIL!,
     });
   });
 
