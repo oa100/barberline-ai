@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/dashboard/sidebar";
+import { MobileHeader } from "@/components/dashboard/mobile-header";
 
 export default function DashboardLayout({
   children,
@@ -7,8 +8,18 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="flex h-screen">
-      <Sidebar />
-      <main className="flex-1 overflow-y-auto p-8">{children}</main>
+      {/* Desktop sidebar — hidden on mobile */}
+      <div className="hidden lg:block">
+        <Sidebar />
+      </div>
+
+      {/* Mobile header — hidden on desktop */}
+      <MobileHeader />
+
+      {/* Main content */}
+      <main className="flex-1 overflow-y-auto pt-14 p-4 lg:pt-0 lg:p-8">
+        {children}
+      </main>
     </div>
   );
 }

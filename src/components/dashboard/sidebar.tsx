@@ -20,19 +20,13 @@ const navItems = [
   { label: "Billing", href: "/dashboard/billing", icon: CreditCard },
 ];
 
-export function Sidebar() {
+export { navItems };
+
+export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-full w-64 flex-col border-r bg-background">
-      {/* Logo */}
-      <div className="flex h-16 items-center border-b px-6">
-        <Link href="/dashboard" className="text-xl font-bold">
-          BarberLine AI
-        </Link>
-      </div>
-
-      {/* Navigation */}
+    <>
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navItems.map((item) => {
           const isActive =
@@ -43,6 +37,7 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 isActive
@@ -56,6 +51,21 @@ export function Sidebar() {
           );
         })}
       </nav>
+    </>
+  );
+}
+
+export function Sidebar() {
+  return (
+    <aside className="flex h-full w-64 flex-col border-r bg-background">
+      {/* Logo */}
+      <div className="flex h-16 items-center border-b px-6">
+        <Link href="/dashboard" className="text-xl font-bold">
+          BarberLine AI
+        </Link>
+      </div>
+
+      <SidebarContent />
 
       {/* User button */}
       <div className="border-t px-6 py-4">
