@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
@@ -16,10 +16,22 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#1a1a1a",
+};
+
 export const metadata: Metadata = {
   title: "BarberLine AI — Never Miss a Booking Again",
   description:
     "AI voice agent that answers calls, books appointments, and manages your barbershop 24/7.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "BarberLine AI",
+  },
 };
 
 export default function RootLayout({
