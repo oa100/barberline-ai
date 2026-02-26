@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Sheet,
   SheetContent,
@@ -52,6 +53,7 @@ export function Header() {
           >
             <Link href="/sign-in">Log In</Link>
           </Button>
+          <ThemeToggle />
           <Button
             asChild
             className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-6 tracking-wide uppercase text-xs"
