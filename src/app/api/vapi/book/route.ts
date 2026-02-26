@@ -3,8 +3,7 @@ import {
   validateVapiRequest,
   unauthorizedResponse,
 } from "@/lib/vapi/validate";
-import { createSquareClient } from "@/lib/square/client";
-import { createBooking } from "@/lib/square/booking";
+import { getBookingProvider } from "@/lib/booking/factory";
 import { createClient } from "@/lib/supabase/server";
 import { sendSms } from "@/lib/twilio/send-sms";
 import { extractShopId } from "@/lib/vapi/extract-shop-id";
@@ -38,12 +37,12 @@ export async function POST(req: NextRequest) {
       startAt,
       customerName,
       customerPhone,
-      serviceVariationId,
-      teamMemberId,
+      serviceId,
+      staffId,
       serviceName,
     } = params;
 
-    if (!shopId || !startAt || !customerName || !serviceVariationId) {
+    if (!shopId || !startAt || !customerName) {
       return Response.json(
         {
           results: [
@@ -60,11 +59,11 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient();
     const { data: shop, error } = await supabase
       .from("shops")
-      .select("square_token, square_location, phone_number, name")
+      .select("provider_type, provider_token, provider_location_id, phone_number, name")
       .eq("id", shopId)
       .single();
 
-    if (error || !shop?.square_token || !shop?.square_location) {
+    if (error || !shop?.provider_token || !shop?.provider_location_id) {
       return Response.json({
         results: [
           {
@@ -75,36 +74,24 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const client = createSquareClient(shop.square_token);
+    const provider = getBookingProvider(shop);
 
-    const booking = await createBooking(client, {
-      locationId: shop.square_location,
+    const booking = await provider.createBooking({
       startAt,
       customerName,
       customerPhone: customerPhone || "",
-      serviceVariationId,
-      teamMemberId,
+      serviceId,
+      staffId,
     });
-
-    if (!booking) {
-      return Response.json({
-        results: [
-          {
-            result:
-              "I'm sorry, something went wrong creating the booking. Please try again.",
-          },
-        ],
-      });
-    }
 
     // Save booking record to Supabase
     const appointmentTime = new Date(startAt);
     await supabase.from("bookings").insert({
       shop_id: shopId,
-      square_booking_id: booking.id || null,
+      provider_booking_id: booking.providerBookingId,
       customer_name: customerName,
       customer_phone: customerPhone || null,
-      team_member_id: teamMemberId || null,
+      team_member_id: staffId || null,
       service: serviceName || "Appointment",
       start_time: startAt,
       status: "confirmed",
@@ -134,7 +121,7 @@ export async function POST(req: NextRequest) {
       results: [
         {
           result: `Your appointment is confirmed for ${formattedTime}. ${customerName}, you're all set! Is there anything else I can help with?`,
-          bookingId: booking.id,
+          bookingId: booking.providerBookingId,
         },
       ],
     });
