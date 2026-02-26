@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 import type { CallOutcome } from "@/lib/supabase/types";
 
 function determineOutcome(summary: string | undefined): CallOutcome {
@@ -62,7 +62,7 @@ export async function processEndOfCallReport(message: VapiMessage): Promise<{ ok
     ? Math.round(message.durationSeconds)
     : null;
 
-  const supabase = await createClient();
+  const supabase = createServiceClient();
 
   await supabase.from("call_logs").insert({
     shop_id: shopId,

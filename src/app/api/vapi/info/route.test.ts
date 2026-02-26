@@ -13,12 +13,12 @@ vi.mock("@/lib/vapi/validate", () => ({
     Response.json({ error: "Unauthorized" }, { status: 401 }),
 }));
 
-vi.mock("@/lib/supabase/server", () => {
+vi.mock("@/lib/supabase/service", () => {
   const mockEq = vi.fn().mockReturnValue({ single: mockSingle });
   const mockSelect = vi.fn().mockReturnValue({ eq: mockEq });
   const mockFrom = vi.fn().mockReturnValue({ select: mockSelect });
   return {
-    createClient: vi.fn().mockResolvedValue({ from: mockFrom }),
+    createServiceClient: vi.fn().mockReturnValue({ from: mockFrom }),
   };
 });
 

@@ -5,6 +5,15 @@ vi.mock("@clerk/nextjs/server", () => ({
   auth: vi.fn(),
 }));
 
+vi.mock("@/lib/supabase/service", () => {
+  const mockServiceInsert = vi.fn().mockResolvedValue({ data: null, error: null });
+  const mockServiceFrom = vi.fn().mockReturnValue({ insert: mockServiceInsert });
+  return {
+    createServiceClient: vi.fn().mockReturnValue({ from: mockServiceFrom }),
+    __serviceMocks: { mockServiceInsert, mockServiceFrom },
+  };
+});
+
 vi.mock("@/lib/supabase/server", () => {
   const mockSingle = vi.fn();
   const mockEq2 = vi.fn().mockReturnValue({ single: mockSingle });
@@ -28,10 +37,16 @@ import { POST } from "./route";
 import { auth } from "@clerk/nextjs/server";
 // @ts-expect-error __mocks injected by vi.mock
 import { __mocks } from "@/lib/supabase/server";
+// @ts-expect-error __serviceMocks injected by vi.mock
+import { __serviceMocks } from "@/lib/supabase/service";
 
 const { mockSingle, mockInsert } = __mocks as {
   mockSingle: ReturnType<typeof vi.fn>;
   mockInsert: ReturnType<typeof vi.fn>;
+};
+
+const { mockServiceInsert } = __serviceMocks as {
+  mockServiceInsert: ReturnType<typeof vi.fn>;
 };
 
 function makeRequest(body: unknown) {
@@ -77,8 +92,8 @@ describe("POST /api/dashboard/simulate-call", () => {
     expect(body.ok).toBe(true);
     expect(body.summary).toMatch(/Simulated call from .+ — (booked|info_only|no_availability)/);
 
-    // Verify the call log was inserted directly (no HTTP fetch)
-    expect(mockInsert).toHaveBeenCalled();
+    // Verify the call log was inserted directly via service client (no HTTP fetch)
+    expect(mockServiceInsert).toHaveBeenCalled();
   });
 
   it("does not use Host header or make HTTP requests to itself", async () => {
@@ -92,7 +107,7 @@ describe("POST /api/dashboard/simulate-call", () => {
   });
 
   it("does not expose internal error details in responses", async () => {
-    mockInsert.mockRejectedValueOnce(new Error("DB connection failed"));
+    mockServiceInsert.mockRejectedValueOnce(new Error("DB connection failed"));
 
     const res = await POST(makeRequest({ shopId: "shop_1" }));
     expect(res.status).toBe(500);

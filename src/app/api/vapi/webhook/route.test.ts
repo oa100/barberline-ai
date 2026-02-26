@@ -8,12 +8,12 @@ vi.mock("@/lib/vapi/validate", () => ({
     Response.json({ error: "Unauthorized" }, { status: 401 }),
 }));
 
-// Mock supabase server module - factory must not reference outer variables
-vi.mock("@/lib/supabase/server", () => {
+// Mock supabase service module - factory must not reference outer variables
+vi.mock("@/lib/supabase/service", () => {
   const mockInsert = vi.fn().mockResolvedValue({ data: null, error: null });
   const mockFrom = vi.fn().mockReturnValue({ insert: mockInsert });
   return {
-    createClient: vi.fn().mockResolvedValue({ from: mockFrom }),
+    createServiceClient: vi.fn().mockReturnValue({ from: mockFrom }),
     __mocks: { mockFrom, mockInsert },
   };
 });
@@ -22,7 +22,7 @@ vi.mock("@/lib/supabase/server", () => {
 import { POST } from "./route";
 import { validateVapiRequest } from "@/lib/vapi/validate";
 // @ts-expect-error __mocks is injected by vi.mock factory above
-import { createClient, __mocks } from "@/lib/supabase/server";
+import { createServiceClient, __mocks } from "@/lib/supabase/service";
 
 const mockValidate = vi.mocked(validateVapiRequest);
 const { mockFrom, mockInsert } = __mocks as {
@@ -45,7 +45,7 @@ describe("POST /api/vapi/webhook", () => {
     // Re-establish mock chain after clearAllMocks
     mockFrom.mockReturnValue({ insert: mockInsert });
     mockInsert.mockResolvedValue({ data: null, error: null });
-    vi.mocked(createClient).mockResolvedValue({ from: mockFrom } as never);
+    vi.mocked(createServiceClient).mockReturnValue({ from: mockFrom } as never);
   });
 
   it("returns 401 when Vapi secret is invalid", async () => {

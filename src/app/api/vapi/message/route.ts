@@ -3,14 +3,19 @@ import {
   validateVapiRequest,
   unauthorizedResponse,
 } from "@/lib/vapi/validate";
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 import twilio from "twilio";
 import { extractShopId } from "@/lib/vapi/extract-shop-id";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   if (!validateVapiRequest(req)) {
     return unauthorizedResponse();
   }
+
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown";
+  const rl = rateLimit(`vapi-message:${ip}`, { limit: 20, windowMs: 60_000 });
+  if (!rl.success) return rateLimitResponse();
 
   try {
     const body = await req.json();
@@ -48,7 +53,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    const supabase = createServiceClient();
     const { data: shop, error } = await supabase
       .from("shops")
       .select("phone_number, name")
