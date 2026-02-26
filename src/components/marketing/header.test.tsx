@@ -39,4 +39,9 @@ describe("Header", () => {
     const signupLink = screen.getByText("Get Started").closest("a");
     expect(signupLink).toHaveAttribute("href", "/signup");
   });
+
+  it("renders hamburger menu button on mobile", () => {
+    render(<Header />);
+    expect(screen.getByLabelText("Open menu")).toBeInTheDocument();
+  });
 });
