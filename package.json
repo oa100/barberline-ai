@@ -16,6 +16,7 @@
     "@supabase/supabase-js": "^2.97.0",
     "@tanstack/react-table": "^8.21.3",
     "@vapi-ai/server-sdk": "^0.11.0",
+    "@vapi-ai/web": "^2.5.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.575.0",

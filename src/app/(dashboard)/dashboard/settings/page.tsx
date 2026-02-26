@@ -6,7 +6,7 @@ export default async function SettingsPage() {
   const shop = await getAuthenticatedShop();
 
   if (!shop) {
-    redirect("/signup");
+    redirect("/dashboard/onboarding");
   }
 
   return (

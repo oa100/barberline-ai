@@ -2,12 +2,14 @@ import { redirect } from "next/navigation";
 import { getAuthenticatedShop } from "@/lib/dashboard/auth";
 import { createClient } from "@/lib/supabase/server";
 import { StatCard } from "@/components/dashboard/stat-card";
+import { SimulateCallButton } from "@/components/dashboard/simulate-call-button";
+import { TalkToAgentButton } from "@/components/dashboard/talk-to-agent-button";
 
 export default async function DashboardPage() {
   const shop = await getAuthenticatedShop();
 
   if (!shop) {
-    redirect("/signup");
+    redirect("/dashboard/onboarding");
   }
 
   const supabase = await createClient();
@@ -50,6 +52,15 @@ export default async function DashboardPage() {
         <p className="mt-1 text-muted-foreground">
           Here is an overview of your shop today.
         </p>
+        <div className="mt-3 flex flex-wrap items-start gap-4">
+          <TalkToAgentButton
+            shopId={shop.id}
+            shopName={shop.name}
+            greeting={shop.greeting}
+            timezone={shop.timezone}
+          />
+          <SimulateCallButton shopId={shop.id} />
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

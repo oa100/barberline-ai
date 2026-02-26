@@ -84,9 +84,12 @@ export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
           </div>
         </CardHeader>
         {currentStep === 1 && (
-          <CardContent>
+          <CardContent className="flex gap-3">
             <Button asChild>
               <a href="/api/square/oauth">Connect Square Account</a>
+            </Button>
+            <Button variant="outline" onClick={() => setCurrentStep(2)}>
+              Skip for now
             </Button>
           </CardContent>
         )}

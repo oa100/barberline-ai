@@ -14,7 +14,7 @@ export default async function BillingPage() {
   const shop = await getAuthenticatedShop();
 
   if (!shop) {
-    redirect("/signup");
+    redirect("/dashboard/onboarding");
   }
 
   return (

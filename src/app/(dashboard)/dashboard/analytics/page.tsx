@@ -9,7 +9,7 @@ export default async function AnalyticsPage() {
   const shop = await getAuthenticatedShop();
 
   if (!shop) {
-    redirect("/signup");
+    redirect("/dashboard/onboarding");
   }
 
   const supabase = await createClient();
