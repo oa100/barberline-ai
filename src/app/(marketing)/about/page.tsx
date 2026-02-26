@@ -10,10 +10,10 @@ export default function AboutPage() {
 
         <div className="container relative mx-auto px-6">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold animate-fade-in">
+            <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold animate-fade-in">
               About Us
             </span>
-            <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
+            <h1 className="mt-4 font-sans font-bold text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
               Built for barbershops,
               <br />
               by people who get it
@@ -31,10 +31,10 @@ export default function AboutPage() {
       <section className="relative bg-secondary py-28">
         <div className="container relative mx-auto px-6">
           <div className="mx-auto max-w-2xl">
-            <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
+            <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold">
               Why Barbershops
             </span>
-            <h2 className="mt-4 font-serif text-3xl tracking-tight sm:text-4xl text-cream">
+            <h2 className="mt-4 font-sans font-bold text-3xl tracking-tight sm:text-4xl text-cream">
               Every missed call is a missed customer
             </h2>
             <div className="gold-line mt-8 w-16" />
@@ -70,10 +70,10 @@ export default function AboutPage() {
 
         <div className="container relative mx-auto px-6">
           <div className="mx-auto max-w-2xl">
-            <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
+            <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold">
               Our Mission
             </span>
-            <h2 className="mt-4 font-serif text-3xl tracking-tight sm:text-4xl text-cream">
+            <h2 className="mt-4 font-sans font-bold text-3xl tracking-tight sm:text-4xl text-cream">
               Help barbers never miss a customer
             </h2>
             <div className="gold-line mt-8 w-16" />
@@ -97,12 +97,11 @@ export default function AboutPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
+                className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-full px-12 py-6 text-sm uppercase tracking-wide"
               >
                 <Link href="/contact">Get in Touch</Link>
               </Button>
 
-              <div className="mx-auto mt-12 barber-stripe-thin h-1 w-32 opacity-40 rounded-full" />
             </div>
           </div>
         </div>

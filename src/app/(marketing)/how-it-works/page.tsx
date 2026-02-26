@@ -30,10 +30,10 @@ export default function HowItWorksPage() {
 
       <div className="container relative mx-auto px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold animate-fade-in">
+          <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold animate-fade-in">
             Get Started
           </span>
-          <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
+          <h1 className="mt-4 font-sans font-bold text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
             How it works
           </h1>
           <p className="mt-6 text-lg text-warm-gray animate-fade-in-up stagger-2">
@@ -55,13 +55,13 @@ export default function HowItWorksPage() {
 
               {/* Number circle */}
               <div className="relative flex h-12 w-12 shrink-0 items-center justify-center border border-gold/40 bg-gold/10">
-                <span className="font-serif text-xl text-gold">
+                <span className="font-sans font-bold text-xl text-gold">
                   {step.number}
                 </span>
               </div>
 
               <div className="pt-1">
-                <h2 className="font-serif text-2xl text-cream">
+                <h2 className="font-sans font-bold text-2xl text-cream">
                   {step.title}
                 </h2>
                 <p className="mt-3 text-warm-gray leading-relaxed">
@@ -76,12 +76,11 @@ export default function HowItWorksPage() {
           <Button
             asChild
             size="lg"
-            className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
+            className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-full px-12 py-6 text-sm uppercase tracking-wide"
           >
             <Link href="/signup">Get Started Now</Link>
           </Button>
 
-          <div className="mx-auto mt-12 barber-stripe-thin h-1 w-32 opacity-40 rounded-full" />
         </div>
       </div>
     </section>

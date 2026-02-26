@@ -12,10 +12,10 @@ export default function PrivacyPolicyPage() {
       <div className="container relative mx-auto px-6">
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
+          <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold">
             Legal
           </span>
-          <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl text-cream">
+          <h1 className="mt-4 font-sans font-bold text-4xl tracking-tight sm:text-5xl text-cream">
             Privacy Policy
           </h1>
           <p className="mt-4 text-sm text-warm-gray">
@@ -37,11 +37,11 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 1. Information We Collect */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             1. Information We Collect
           </h2>
 
-          <h3 className="mt-6 mb-2 font-serif text-lg text-cream/80">
+          <h3 className="mt-6 mb-2 font-sans font-bold text-lg text-cream/80">
             Account Information
           </h3>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -51,7 +51,7 @@ export default function PrivacyPolicyPage() {
             address, phone number, and other shop details you provide.
           </p>
 
-          <h3 className="mt-6 mb-2 font-serif text-lg text-cream/80">
+          <h3 className="mt-6 mb-2 font-sans font-bold text-lg text-cream/80">
             Phone Call Data
           </h3>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -74,7 +74,7 @@ export default function PrivacyPolicyPage() {
             </li>
           </ul>
 
-          <h3 className="mt-6 mb-2 font-serif text-lg text-cream/80">
+          <h3 className="mt-6 mb-2 font-sans font-bold text-lg text-cream/80">
             Booking Data
           </h3>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -85,7 +85,7 @@ export default function PrivacyPolicyPage() {
             account.
           </p>
 
-          <h3 className="mt-6 mb-2 font-serif text-lg text-cream/80">
+          <h3 className="mt-6 mb-2 font-sans font-bold text-lg text-cream/80">
             Usage and Analytics Data
           </h3>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -96,7 +96,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 2. How We Use Your Information */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             2. How We Use Your Information
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -134,7 +134,7 @@ export default function PrivacyPolicyPage() {
           </ul>
 
           {/* 3. Third-Party Services */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             3. Third-Party Services
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -180,7 +180,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 4. Call Recording Disclosure */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             4. Call Recording Disclosure
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -195,7 +195,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 5. Data Retention */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             5. Data Retention
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -210,7 +210,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 6. Data Security */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             6. Data Security
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -224,7 +224,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 7. Your Rights */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             7. Your Rights
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -267,7 +267,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 8. Children's Privacy */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             8. Children&apos;s Privacy
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -279,7 +279,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 9. Changes to This Policy */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             9. Changes to This Privacy Policy
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -292,7 +292,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 10. Contact Us */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             10. Contact Us
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -300,7 +300,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy or our data practices, please contact us at:
           </p>
           <div className="mt-4 border border-gold/10 bg-card p-6 text-sm leading-relaxed text-warm-gray">
-            <p className="text-cream font-serif">BarberLine AI</p>
+            <p className="text-cream font-sans font-bold">BarberLine AI</p>
             <p className="mt-2">
               Email:{" "}
               <a

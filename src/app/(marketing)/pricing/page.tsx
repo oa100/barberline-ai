@@ -42,10 +42,10 @@ export default function PricingPage() {
 
       <div className="container relative mx-auto px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold animate-fade-in">
+          <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold animate-fade-in">
             Pricing
           </span>
-          <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
+          <h1 className="mt-4 font-sans font-bold text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
             Simple, transparent pricing
           </h1>
           <p className="mt-6 text-lg text-warm-gray animate-fade-in-up stagger-2">
@@ -73,14 +73,14 @@ export default function PricingPage() {
               )}
 
               <div className="mb-2">
-                <h2 className="font-serif text-2xl text-cream">{plan.name}</h2>
+                <h2 className="font-sans font-bold text-2xl text-cream">{plan.name}</h2>
                 <p className="mt-1 text-sm text-warm-gray">
                   {plan.description}
                 </p>
               </div>
 
               <div className="my-8 flex items-baseline gap-1">
-                <span className="font-serif text-5xl text-gold">
+                <span className="font-sans font-bold text-5xl text-gold">
                   {plan.price}
                 </span>
                 <span className="text-warm-gray text-lg">{plan.period}</span>
@@ -101,7 +101,7 @@ export default function PricingPage() {
 
               <Button
                 asChild
-                className={`w-full rounded-none py-6 text-sm uppercase tracking-[0.15em] font-semibold ${
+                className={`w-full rounded-full py-6 text-sm uppercase tracking-wide font-semibold ${
                   plan.popular
                     ? "bg-gold text-primary-foreground hover:bg-gold-light"
                     : "bg-transparent border border-gold/30 text-cream hover:bg-gold/10"
