@@ -20,11 +20,7 @@ export function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-6">
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-3 group">
-            {/* Barber pole icon */}
-            <div className="relative h-8 w-3 overflow-hidden rounded-full">
-              <div className="barber-stripe absolute inset-0" />
-            </div>
-            <span className="font-serif text-2xl tracking-wide text-foreground">
+            <span className="font-sans font-bold text-2xl tracking-wide text-foreground">
               BarberLine <span className="text-gold">AI</span>
             </span>
           </Link>
@@ -56,7 +52,7 @@ export function Header() {
           <ThemeToggle />
           <Button
             asChild
-            className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-6 tracking-wide uppercase text-xs"
+            className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-full px-6 tracking-wide uppercase text-xs"
           >
             <Link href="/signup">Get Started</Link>
           </Button>
@@ -75,7 +71,7 @@ export function Header() {
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetContent side="right" className="w-72 bg-background border-gold/10">
             <SheetHeader className="border-b border-gold/10 pb-4">
-              <SheetTitle className="font-serif text-xl text-cream">
+              <SheetTitle className="font-sans font-bold text-xl text-cream">
                 BarberLine <span className="text-gold">AI</span>
               </SheetTitle>
             </SheetHeader>
@@ -106,7 +102,7 @@ export function Header() {
                 </Button>
                 <Button
                   asChild
-                  className="w-full bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-6 tracking-wide uppercase text-xs"
+                  className="w-full bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-full px-6 tracking-wide uppercase text-xs"
                 >
                   <Link href="/signup" onClick={() => setOpen(false)}>
                     Get Started
