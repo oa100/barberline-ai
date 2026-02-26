@@ -21,25 +21,25 @@ export function PricingCards() {
           return (
             <div
               key={plan.name}
-              className={`card-glow animate-fade-in-up stagger-${i + 3} relative border bg-[#111111] p-10 ${
+              className={`card-glow animate-fade-in-up stagger-${i + 3} relative border bg-card p-10 ${
                 plan.popular ? "border-gold/40" : "border-gold/10"
               }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-gold text-[#0A0A0A] px-5 py-1.5 text-xs font-bold uppercase tracking-[0.2em]">
+                  <span className="bg-gold text-primary-foreground px-5 py-1.5 text-xs font-bold uppercase tracking-[0.2em]">
                     Most Popular
                   </span>
                 </div>
               )}
 
               <div className="mb-2">
-                <h2 className="font-serif text-2xl text-cream">{plan.name}</h2>
+                <h2 className="font-sans font-bold text-2xl text-cream">{plan.name}</h2>
                 <p className="mt-1 text-sm text-warm-gray">{plan.description}</p>
               </div>
 
               <div className="my-8 flex items-baseline gap-1">
-                <span className="font-serif text-5xl text-gold">${price}</span>
+                <span className="font-sans font-bold text-5xl text-gold">${price}</span>
                 <span className="text-warm-gray text-lg">/mo</span>
               </div>
               {interval === "annual" && (
@@ -63,9 +63,9 @@ export function PricingCards() {
 
               <Button
                 asChild
-                className={`w-full rounded-none py-6 text-sm uppercase tracking-[0.15em] font-semibold ${
+                className={`w-full rounded-full py-6 text-sm uppercase tracking-wide font-semibold ${
                   plan.popular
-                    ? "bg-gold text-[#0A0A0A] hover:bg-gold-light"
+                    ? "bg-gold text-primary-foreground hover:bg-gold-light"
                     : "bg-transparent border border-gold/30 text-cream hover:bg-gold/10"
                 }`}
               >

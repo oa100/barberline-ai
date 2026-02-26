@@ -12,10 +12,10 @@ export default function TermsOfServicePage() {
       <div className="container relative mx-auto px-6">
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
+          <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold">
             Legal
           </span>
-          <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl text-cream">
+          <h1 className="mt-4 font-sans font-bold text-4xl tracking-tight sm:text-5xl text-cream">
             Terms of Service
           </h1>
           <p className="mt-4 text-sm text-warm-gray">
@@ -36,7 +36,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 1. Acceptance of Terms */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             1. Acceptance of Terms
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -48,7 +48,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 2. Service Description */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             2. Service Description
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -79,7 +79,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 3. Account Registration */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             3. Account Registration
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -94,7 +94,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 4. Free Trial and Billing */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             4. Free Trial and Billing
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -130,7 +130,7 @@ export default function TermsOfServicePage() {
           </ul>
 
           {/* 5. AI Service Disclaimer */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             5. AI Service Disclaimer
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -175,7 +175,7 @@ export default function TermsOfServicePage() {
           </ul>
 
           {/* 6. Your Responsibilities */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             6. Your Responsibilities
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -209,7 +209,7 @@ export default function TermsOfServicePage() {
           </ul>
 
           {/* 7. Intellectual Property */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             7. Intellectual Property
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -223,7 +223,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 8. Limitation of Liability */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             8. Limitation of Liability
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -249,7 +249,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 9. Indemnification */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             9. Indemnification
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -265,7 +265,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 10. Termination */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             10. Termination
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -292,7 +292,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 11. Governing Law */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             11. Governing Law and Dispute Resolution
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -305,7 +305,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 12. Changes to These Terms */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             12. Changes to These Terms
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -319,7 +319,7 @@ export default function TermsOfServicePage() {
           </p>
 
           {/* 13. Miscellaneous */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             13. Miscellaneous
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-6 text-sm leading-relaxed text-warm-gray">
@@ -346,7 +346,7 @@ export default function TermsOfServicePage() {
           </ul>
 
           {/* 14. Contact Us */}
-          <h2 className="mt-12 mb-4 font-serif text-2xl text-cream">
+          <h2 className="mt-12 mb-4 font-sans font-bold text-2xl text-cream">
             14. Contact Us
           </h2>
           <p className="text-sm leading-relaxed text-warm-gray">
@@ -354,7 +354,7 @@ export default function TermsOfServicePage() {
             contact us at:
           </p>
           <div className="mt-4 border border-gold/10 bg-card p-6 text-sm leading-relaxed text-warm-gray">
-            <p className="text-cream font-serif">BarberLine AI</p>
+            <p className="text-cream font-sans font-bold">BarberLine AI</p>
             <p className="mt-2">
               Email:{" "}
               <a

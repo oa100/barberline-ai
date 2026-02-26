@@ -19,12 +19,12 @@ export function PricingToggle({
   }
 
   return (
-    <div className="inline-flex items-center rounded-none border border-gold/20 bg-gold/5 p-1">
+    <div className="inline-flex items-center rounded-full border border-gold/20 bg-gold/5 p-1">
       <button
         onClick={() => toggle("monthly")}
-        className={`px-5 py-2 text-xs font-medium uppercase tracking-[0.15em] transition-colors ${
+        className={`px-5 py-2 text-xs font-semibold uppercase tracking-wide rounded-full transition-colors ${
           interval === "monthly"
-            ? "bg-gold text-[#0A0A0A]"
+            ? "bg-gold text-primary-foreground"
             : "text-warm-gray hover:text-cream"
         }`}
       >
@@ -32,9 +32,9 @@ export function PricingToggle({
       </button>
       <button
         onClick={() => toggle("annual")}
-        className={`px-5 py-2 text-xs font-medium uppercase tracking-[0.15em] transition-colors ${
+        className={`px-5 py-2 text-xs font-semibold uppercase tracking-wide rounded-full transition-colors ${
           interval === "annual"
-            ? "bg-gold text-[#0A0A0A]"
+            ? "bg-gold text-primary-foreground"
             : "text-warm-gray hover:text-cream"
         }`}
       >

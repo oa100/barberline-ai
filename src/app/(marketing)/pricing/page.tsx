@@ -8,10 +8,10 @@ export default function PricingPage() {
 
       <div className="container relative mx-auto px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold animate-fade-in">
+          <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold animate-fade-in">
             Pricing
           </span>
-          <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
+          <h1 className="mt-4 font-sans font-bold text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
             Simple, transparent pricing
           </h1>
           <p className="mt-6 text-lg text-warm-gray animate-fade-in-up stagger-2">

@@ -2,7 +2,7 @@ import type { Appearance } from "@clerk/types";
 
 export const clerkAppearance: Appearance = {
   variables: {
-    colorPrimary: "#C8A55C",
+    colorPrimary: "#D97706",
     colorBackground: "var(--card)",
     colorText: "var(--cream)",
     colorTextSecondary: "var(--warm-gray)",
@@ -16,13 +16,13 @@ export const clerkAppearance: Appearance = {
     headerTitle: "text-cream font-serif",
     headerSubtitle: "text-warm-gray",
     formButtonPrimary:
-      "bg-gold text-primary-foreground font-semibold uppercase tracking-[0.15em] text-sm hover:bg-gold-light rounded-none",
+      "bg-gold text-primary-foreground font-semibold uppercase tracking-[0.15em] text-sm hover:bg-gold-light rounded-full",
     formFieldInput:
-      "bg-muted border-gold/10 text-cream placeholder:text-warm-gray/50 rounded-none focus:border-gold/30 focus:ring-gold/10",
+      "bg-muted border-gold/10 text-cream placeholder:text-warm-gray/50 rounded-full focus:border-gold/30 focus:ring-gold/10",
     formFieldLabel: "text-warm-gray text-xs uppercase tracking-wider",
     footerActionLink: "text-gold hover:text-gold-light",
     socialButtonsBlockButton:
-      "border-gold/10 bg-muted text-cream hover:bg-gold/5 rounded-none",
+      "border-gold/10 bg-muted text-cream hover:bg-gold/5 rounded-full",
     socialButtonsBlockButtonText: "text-cream",
     dividerLine: "bg-gold/10",
     dividerText: "text-warm-gray",

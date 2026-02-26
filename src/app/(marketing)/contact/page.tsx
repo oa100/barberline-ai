@@ -9,10 +9,10 @@ export default function ContactPage() {
 
         <div className="container relative mx-auto px-6">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold animate-fade-in">
+            <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold animate-fade-in">
               Contact
             </span>
-            <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
+            <h1 className="mt-4 font-sans font-bold text-4xl tracking-tight sm:text-5xl md:text-6xl text-cream animate-fade-in-up stagger-1">
               Let&apos;s talk
             </h1>
             <p className="mt-6 text-lg text-warm-gray animate-fade-in-up stagger-2">
@@ -34,7 +34,7 @@ export default function ContactPage() {
                 <div className="flex h-12 w-12 items-center justify-center border border-gold/30 bg-gold/10">
                   <Mail className="h-5 w-5 text-gold" />
                 </div>
-                <h2 className="mt-6 font-serif text-2xl text-cream">Email</h2>
+                <h2 className="mt-6 font-sans font-bold text-2xl text-cream">Email</h2>
                 <a
                   href="mailto:hello@barberlineai.com"
                   className="mt-3 block text-gold hover:text-gold-light transition-colors"
@@ -51,7 +51,7 @@ export default function ContactPage() {
                 <div className="flex h-12 w-12 items-center justify-center border border-gold/30 bg-gold/10">
                   <Instagram className="h-5 w-5 text-gold" />
                 </div>
-                <h2 className="mt-6 font-serif text-2xl text-cream">
+                <h2 className="mt-6 font-sans font-bold text-2xl text-cream">
                   Instagram
                 </h2>
                 <a
@@ -75,7 +75,7 @@ export default function ContactPage() {
               <div className="flex h-12 w-12 items-center justify-center border border-gold/30 bg-gold/10">
                 <MessageCircle className="h-5 w-5 text-gold" />
               </div>
-              <h2 className="mt-6 font-serif text-2xl text-cream">
+              <h2 className="mt-6 font-sans font-bold text-2xl text-cream">
                 Existing customers
               </h2>
               <p className="mt-3 text-warm-gray leading-relaxed">
@@ -85,7 +85,6 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div className="mx-auto mt-16 barber-stripe-thin h-1 w-32 opacity-40 rounded-full" />
           </div>
         </div>
       </section>
