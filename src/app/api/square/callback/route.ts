@@ -71,8 +71,9 @@ export async function GET(req: NextRequest) {
     const { error: updateError } = await supabase
       .from("shops")
       .update({
-        square_token: accessToken,
-        square_location: locationId,
+        provider_type: "square",
+        provider_token: accessToken,
+        provider_location_id: locationId,
       })
       .eq("clerk_user_id", userId);
 
