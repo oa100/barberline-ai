@@ -1,10 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-const BASE_URL = "https://barberline-ai.vercel.app";
-
 test.describe("Marketing Pages", () => {
   test("landing page loads with hero and CTA", async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto("/");
     await expect(page).toHaveTitle(/BarberLine AI/);
     await expect(
       page.locator("text=Never miss a booking again")
@@ -13,7 +11,7 @@ test.describe("Marketing Pages", () => {
   });
 
   test("landing page has all sections", async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto("/");
     // Problem section
     await expect(
       page.locator("text=You're mid-cut. The phone rings...")
@@ -31,7 +29,7 @@ test.describe("Marketing Pages", () => {
   });
 
   test("header has navigation links", async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto("/");
     const header = page.locator("header");
     await expect(header.getByText("How It Works")).toBeVisible();
     await expect(header.getByText("Pricing")).toBeVisible();
@@ -40,7 +38,7 @@ test.describe("Marketing Pages", () => {
   });
 
   test("pricing page loads with plans", async ({ page }) => {
-    await page.goto(`${BASE_URL}/pricing`);
+    await page.goto("/pricing");
     await expect(
       page.locator("text=Simple, transparent pricing")
     ).toBeVisible();
@@ -52,7 +50,7 @@ test.describe("Marketing Pages", () => {
   });
 
   test("how-it-works page loads with steps", async ({ page }) => {
-    await page.goto(`${BASE_URL}/how-it-works`);
+    await page.goto("/how-it-works");
     await expect(
       page.getByRole("heading", { name: "How it works" })
     ).toBeVisible();
@@ -70,21 +68,21 @@ test.describe("Marketing Pages", () => {
 
 test.describe("Navigation", () => {
   test("can navigate to pricing page directly", async ({ page }) => {
-    await page.goto(`${BASE_URL}/pricing`);
+    await page.goto("/pricing");
     await expect(
       page.locator("text=Simple, transparent pricing")
     ).toBeVisible();
   });
 
   test("can navigate to how-it-works page directly", async ({ page }) => {
-    await page.goto(`${BASE_URL}/how-it-works`);
+    await page.goto("/how-it-works");
     await expect(
       page.getByRole("heading", { name: "How it works" })
     ).toBeVisible();
   });
 
   test("footer links are present", async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto("/");
     const footer = page.locator("footer");
     await expect(footer).toBeVisible();
     await expect(footer.getByText("BarberLine AI", { exact: true }).first()).toBeVisible();
@@ -95,14 +93,14 @@ test.describe("Navigation", () => {
 
 test.describe("API Routes", () => {
   test("vapi webhook returns 401 without secret", async ({ request }) => {
-    const res = await request.post(`${BASE_URL}/api/vapi/webhook`, {
+    const res = await request.post("/api/vapi/webhook", {
       data: { message: { type: "test" } },
     });
     expect(res.status()).toBe(401);
   });
 
   test("dashboard API returns error without auth", async ({ request }) => {
-    const res = await request.get(`${BASE_URL}/api/dashboard/calls`);
+    const res = await request.get("/api/dashboard/calls");
     // Without Clerk configured, returns 401 or 500
     expect([401, 500]).toContain(res.status());
   });
@@ -110,7 +108,7 @@ test.describe("API Routes", () => {
 
 test.describe("Screenshots", () => {
   test("capture landing page screenshot", async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto("/");
     await page.waitForLoadState("networkidle");
     await page.screenshot({
       path: "e2e/screenshots/landing.png",
@@ -119,7 +117,7 @@ test.describe("Screenshots", () => {
   });
 
   test("capture pricing page screenshot", async ({ page }) => {
-    await page.goto(`${BASE_URL}/pricing`);
+    await page.goto("/pricing");
     await page.waitForLoadState("networkidle");
     await page.screenshot({
       path: "e2e/screenshots/pricing.png",
@@ -128,7 +126,7 @@ test.describe("Screenshots", () => {
   });
 
   test("capture how-it-works screenshot", async ({ page }) => {
-    await page.goto(`${BASE_URL}/how-it-works`);
+    await page.goto("/how-it-works");
     await page.waitForLoadState("networkidle");
     await page.screenshot({
       path: "e2e/screenshots/how-it-works.png",
