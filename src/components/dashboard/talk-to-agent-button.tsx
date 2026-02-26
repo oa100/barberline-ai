@@ -132,9 +132,9 @@ Be warm, professional, and conversational. Keep responses concise since this is 
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
         {status === "idle" ? (
-          <Button onClick={startCall} variant="default" size="sm">
+          <Button onClick={startCall} variant="default" size="sm" className="w-full sm:w-auto">
             <PhoneCall className="mr-2 h-4 w-4" />
             Talk to Agent
           </Button>
@@ -144,6 +144,7 @@ Be warm, professional, and conversational. Keep responses concise since this is 
               onClick={endCall}
               variant="destructive"
               size="sm"
+              className="w-full sm:w-auto"
               disabled={status === "connecting" || status === "ending"}
             >
               <PhoneOff className="mr-2 h-4 w-4" />

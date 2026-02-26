@@ -39,8 +39,8 @@ export function SimulateCallButton({ shopId }: SimulateCallButtonProps) {
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <Button onClick={handleSimulate} disabled={loading} variant="outline" size="sm">
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+      <Button onClick={handleSimulate} disabled={loading} variant="outline" size="sm" className="w-full sm:w-auto">
         <Phone className="mr-2 h-4 w-4" />
         {loading ? "Calling..." : "Simulate Call"}
       </Button>

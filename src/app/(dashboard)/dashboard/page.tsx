@@ -52,7 +52,7 @@ export default async function DashboardPage() {
         <p className="mt-1 text-muted-foreground">
           Here is an overview of your shop today.
         </p>
-        <div className="mt-3 flex flex-wrap items-start gap-4">
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:gap-4">
           <TalkToAgentButton
             shopId={shop.id}
             shopName={shop.name}
