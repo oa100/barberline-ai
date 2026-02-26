@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { allowed } = rateLimit(`portal:${userId}`, { limit: 5, windowMs: 60_000 });
-  if (!allowed) return rateLimitResponse();
+  const { success } = rateLimit(`portal:${userId}`, { limit: 5, windowMs: 60_000 });
+  if (!success) return rateLimitResponse();
 
   const supabase = await createClient();
   const { data: shop } = await supabase

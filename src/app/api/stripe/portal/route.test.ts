@@ -29,7 +29,7 @@ vi.mock("@/lib/stripe", () => ({
 }));
 
 vi.mock("@/lib/rate-limit", () => ({
-  rateLimit: vi.fn().mockReturnValue({ allowed: true, remaining: 4 }),
+  rateLimit: vi.fn().mockReturnValue({ success: true, remaining: 4 }),
   rateLimitResponse: vi.fn(),
 }));
 

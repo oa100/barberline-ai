@@ -36,14 +36,17 @@ export async function POST(req: NextRequest) {
     case "customer.subscription.updated": {
       const sub = event.data.object as Stripe.Subscription;
       const tier = sub.metadata?.tier ?? null;
+      // Access raw event data for fields not in SDK types
+      const rawSub = event.data.object as unknown as Record<string, unknown>;
+      const periodEnd = typeof rawSub.current_period_end === "number"
+        ? new Date(rawSub.current_period_end * 1000).toISOString()
+        : null;
       await supabase
         .from("shops")
         .update({
           subscription_status: sub.status,
           subscription_tier: tier,
-          current_period_end: sub.current_period_end
-            ? new Date(sub.current_period_end * 1000).toISOString()
-            : null,
+          current_period_end: periodEnd,
           trial_ends_at: sub.trial_end
             ? new Date(sub.trial_end * 1000).toISOString()
             : null,

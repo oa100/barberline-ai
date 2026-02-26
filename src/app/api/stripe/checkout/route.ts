@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { allowed } = rateLimit(`checkout:${userId}`, { limit: 5, windowMs: 60_000 });
-  if (!allowed) return rateLimitResponse();
+  const { success } = rateLimit(`checkout:${userId}`, { limit: 5, windowMs: 60_000 });
+  if (!success) return rateLimitResponse();
 
   const body = await req.json();
   const tier = body.tier as string;

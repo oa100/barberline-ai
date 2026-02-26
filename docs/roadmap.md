@@ -23,7 +23,7 @@
 ### P0: Launch Blockers
 
 - [ ] **Dead links + missing pages** — Footer links to `/about`, `/contact`, `/privacy`, `/terms` that don't exist. Privacy policy and terms are legally required.
-- [ ] **Stripe billing integration** — Billing page says "coming soon." Can't charge customers without this. Plans: Starter ($49/mo), Pro ($99/mo). 14-day free trial.
+- [x] **Stripe billing integration** — Checkout, portal, webhooks, billing page. Plans: Starter ($49/mo), Pro ($99/mo). 14-day free trial.
 - [ ] **Remaining security fixes** — From audit (`docs/security-audit-2026-02-25.md`):
   - [ ] Square tokens stored in plaintext (HIGH-02) — encrypt at rest
   - [ ] No rate limiting (HIGH-03) — add per-endpoint limits
