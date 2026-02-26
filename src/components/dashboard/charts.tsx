@@ -52,13 +52,13 @@ export function CallVolumeChart({ data }: { data: CallVolumeData[] }) {
               <Tooltip />
               <Bar
                 dataKey="total"
-                fill="hsl(var(--muted-foreground))"
+                fill="var(--muted-foreground)"
                 name="Total Calls"
                 radius={[4, 4, 0, 0]}
               />
               <Bar
                 dataKey="booked"
-                fill="hsl(var(--primary))"
+                fill="var(--primary)"
                 name="Booked"
                 radius={[4, 4, 0, 0]}
               />
@@ -93,7 +93,7 @@ export function PeakHoursChart({ data }: { data: PeakHoursData[] }) {
               <Line
                 type="monotone"
                 dataKey="count"
-                stroke="hsl(var(--primary))"
+                stroke="var(--primary)"
                 strokeWidth={2}
                 name="Calls"
                 dot={{ r: 4 }}
