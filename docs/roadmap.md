@@ -22,16 +22,19 @@
 
 ### P0: Launch Blockers
 
-- [ ] **Dead links + missing pages** — Footer links to `/about`, `/contact`, `/privacy`, `/terms` that don't exist. Privacy policy and terms are legally required.
+- [x] **Dead links + missing pages** — Created `/about`, `/contact`, `/privacy`, `/terms` pages.
 - [x] **Stripe billing integration** — Checkout, portal, webhooks, billing page. Plans: Starter ($49/mo), Pro ($99/mo). 14-day free trial.
-- [ ] **Remaining security fixes** — From audit (`docs/security-audit-2026-02-25.md`):
-  - [ ] Square tokens stored in plaintext (HIGH-02) — encrypt at rest
-  - [ ] No rate limiting (HIGH-03) — add per-endpoint limits
-  - [ ] Prompt injection via shop name/greeting (HIGH-04) — sanitize before prompt interpolation
-  - [ ] Input validation on settings (MEDIUM-01) — add Zod schemas
-  - [ ] Timing-safe secret comparison (MEDIUM-04)
-  - [ ] Error detail leaking (MEDIUM-05)
-  - [ ] Shop ID validation in Vapi tool calls (MEDIUM-06)
+- [x] **Remaining security fixes** — All findings from audit fixed:
+  - [x] HIGH-01: Service-role Supabase client for Vapi routes
+  - [x] HIGH-02: AES-256-GCM token encryption at rest
+  - [x] HIGH-03: Rate limiting on all API endpoints
+  - [x] HIGH-04: Prompt injection sanitization (length + trim)
+  - [x] HIGH-05: SSRF eliminated (direct function call)
+  - [x] MEDIUM-01: Zod schema validation on settings
+  - [x] MEDIUM-02: Security headers in next.config.ts
+  - [x] MEDIUM-04: Timing-safe secret comparison
+  - [x] MEDIUM-05: Generic error messages (no detail leaking)
+  - [x] MEDIUM-06: Shop ID validation in Vapi tool calls
 
 ### P1: Pre-Launch Polish
 
