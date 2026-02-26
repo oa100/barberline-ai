@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ServiceWorkerRegister } from "@/components/sw-register";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -49,6 +50,7 @@ export default function RootLayout({
           className={`${dmSans.variable} ${instrumentSerif.variable} font-sans antialiased`}
         >
           {children}
+          <ServiceWorkerRegister />
         </body>
       </html>
     </ClerkProvider>
