@@ -24,7 +24,7 @@ export function PricingToggle({
         onClick={() => toggle("monthly")}
         className={`px-5 py-2 text-xs font-medium uppercase tracking-[0.15em] transition-colors ${
           interval === "monthly"
-            ? "bg-gold text-[#0A0A0A]"
+            ? "bg-gold text-primary-foreground"
             : "text-warm-gray hover:text-cream"
         }`}
       >
@@ -34,7 +34,7 @@ export function PricingToggle({
         onClick={() => toggle("annual")}
         className={`px-5 py-2 text-xs font-medium uppercase tracking-[0.15em] transition-colors ${
           interval === "annual"
-            ? "bg-gold text-[#0A0A0A]"
+            ? "bg-gold text-primary-foreground"
             : "text-warm-gray hover:text-cream"
         }`}
       >

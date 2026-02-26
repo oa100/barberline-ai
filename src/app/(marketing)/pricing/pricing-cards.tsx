@@ -21,13 +21,13 @@ export function PricingCards() {
           return (
             <div
               key={plan.name}
-              className={`card-glow animate-fade-in-up stagger-${i + 3} relative border bg-[#111111] p-10 ${
+              className={`card-glow animate-fade-in-up stagger-${i + 3} relative border bg-card p-10 ${
                 plan.popular ? "border-gold/40" : "border-gold/10"
               }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-gold text-[#0A0A0A] px-5 py-1.5 text-xs font-bold uppercase tracking-[0.2em]">
+                  <span className="bg-gold text-primary-foreground px-5 py-1.5 text-xs font-bold uppercase tracking-[0.2em]">
                     Most Popular
                   </span>
                 </div>
@@ -65,7 +65,7 @@ export function PricingCards() {
                 asChild
                 className={`w-full rounded-none py-6 text-sm uppercase tracking-[0.15em] font-semibold ${
                   plan.popular
-                    ? "bg-gold text-[#0A0A0A] hover:bg-gold-light"
+                    ? "bg-gold text-primary-foreground hover:bg-gold-light"
                     : "bg-transparent border border-gold/30 text-cream hover:bg-gold/10"
                 }`}
               >
