@@ -19,7 +19,7 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$79",
+    price: "$99",
     period: "/mo",
     description: "For growing shops that need the full experience.",
     popular: true,

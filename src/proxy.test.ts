@@ -10,7 +10,7 @@ vi.mock("@clerk/nextjs/server", () => ({
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { config } from "./proxy";
 
-describe("proxy.ts", () => {
+describe("proxy", () => {
   it("uses clerkMiddleware", () => {
     expect(clerkMiddleware).toHaveBeenCalled();
   });

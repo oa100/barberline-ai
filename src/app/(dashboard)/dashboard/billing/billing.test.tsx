@@ -50,7 +50,7 @@ describe("BillingPage", () => {
       screen.getByRole("button", { name: "Starter — $49/mo" })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Pro — $79/mo" })
+      screen.getByRole("button", { name: "Pro — $99/mo" })
     ).toBeInTheDocument();
   });
 });

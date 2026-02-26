@@ -45,7 +45,7 @@ test.describe("Marketing Pages", () => {
       page.locator("text=Simple, transparent pricing")
     ).toBeVisible();
     await expect(page.locator("text=$49")).toBeVisible();
-    await expect(page.locator("text=$79")).toBeVisible();
+    await expect(page.locator("text=$99")).toBeVisible();
     await expect(page.locator("text=Most Popular")).toBeVisible();
     await expect(page.locator("text=Starter").first()).toBeVisible();
     await expect(page.locator("text=Pro").first()).toBeVisible();

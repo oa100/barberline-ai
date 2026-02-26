@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { currentUser } from "@clerk/nextjs/server";
 import { getAuthenticatedShop } from "@/lib/dashboard/auth";
 import { createClient } from "@/lib/supabase/server";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -6,7 +7,10 @@ import { SimulateCallButton } from "@/components/dashboard/simulate-call-button"
 import { TalkToAgentButton } from "@/components/dashboard/talk-to-agent-button";
 
 export default async function DashboardPage() {
-  const shop = await getAuthenticatedShop();
+  const [shop, user] = await Promise.all([
+    getAuthenticatedShop(),
+    currentUser(),
+  ]);
 
   if (!shop) {
     redirect("/dashboard/onboarding");
@@ -48,9 +52,11 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">Welcome, {shop.name}</h1>
+        <h1 className="text-3xl font-bold">
+          Welcome, {user?.firstName ?? shop.name}
+        </h1>
         <p className="mt-1 text-muted-foreground">
-          Here is an overview of your shop today.
+          Here&apos;s an overview of {shop.name} today.
         </p>
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:gap-4">
           <TalkToAgentButton

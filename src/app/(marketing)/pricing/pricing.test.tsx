@@ -43,7 +43,7 @@ describe("PricingPage", () => {
   it("renders correct prices", () => {
     render(<PricingPage />);
     expect(screen.getByText("$49")).toBeInTheDocument();
-    expect(screen.getByText("$79")).toBeInTheDocument();
+    expect(screen.getByText("$99")).toBeInTheDocument();
   });
 
   it("marks Pro plan as Most Popular", () => {

@@ -39,7 +39,7 @@ export default async function BillingPage() {
         <CardContent className="space-y-4">
           <div className="flex gap-4">
             <Button variant="outline">Starter — $49/mo</Button>
-            <Button>Pro — $79/mo</Button>
+            <Button>Pro — $99/mo</Button>
           </div>
           <p className="text-sm text-muted-foreground">
             Stripe checkout integration coming soon.
