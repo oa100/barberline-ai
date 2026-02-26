@@ -27,9 +27,10 @@ describe("CallTable", () => {
     const call = makeCall();
     render(<CallTable calls={[call]} />);
 
-    expect(screen.getByText("+15551234567")).toBeInTheDocument();
-    expect(screen.getByText("2:05")).toBeInTheDocument();
-    expect(screen.getByText("Booked")).toBeInTheDocument();
+    // Both mobile card and desktop table render, so use getAllByText
+    expect(screen.getAllByText("+15551234567").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("2:05").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("Booked").length).toBeGreaterThanOrEqual(1);
   });
 
   it("shows correct badge for each outcome type", () => {
@@ -56,9 +57,13 @@ describe("CallTable", () => {
     render(<CallTable calls={calls} />);
 
     for (const { label, variant } of outcomes) {
-      const badge = screen.getByText(label);
-      expect(badge).toBeInTheDocument();
-      expect(badge).toHaveAttribute("data-variant", variant);
+      const badges = screen.getAllByText(label);
+      expect(badges.length).toBeGreaterThanOrEqual(1);
+      // Check that at least one badge has the correct variant
+      const hasCorrectVariant = badges.some(
+        (badge) => badge.getAttribute("data-variant") === variant,
+      );
+      expect(hasCorrectVariant).toBe(true);
     }
   });
 
@@ -77,10 +82,10 @@ describe("CallTable", () => {
     const row = screen.getByTestId("call-row-call-1");
     fireEvent.click(row);
 
-    // Transcript summary should now be visible
+    // Transcript summary should now be visible (in both mobile card and table)
     expect(
-      screen.getByText("Customer booked a haircut for Tuesday."),
-    ).toBeInTheDocument();
+      screen.getAllByText("Customer booked a haircut for Tuesday.").length,
+    ).toBeGreaterThanOrEqual(1);
   });
 
   it("formats duration correctly", () => {
@@ -90,5 +95,14 @@ describe("CallTable", () => {
     expect(formatDuration(61)).toBe("1:01");
     expect(formatDuration(null)).toBe("0:00");
     expect(formatDuration(3599)).toBe("59:59");
+  });
+
+  it("renders mobile call cards", () => {
+    const call = makeCall();
+    render(<CallTable calls={[call]} />);
+
+    // Mobile cards should exist alongside table (CSS handles visibility)
+    const mobileCard = screen.getByTestId("call-card-call-1");
+    expect(mobileCard).toBeInTheDocument();
   });
 });

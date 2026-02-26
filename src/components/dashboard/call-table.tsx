@@ -64,62 +64,104 @@ export function CallTable({ calls }: CallTableProps) {
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-8" />
-          <TableHead>Time</TableHead>
-          <TableHead>Caller</TableHead>
-          <TableHead>Duration</TableHead>
-          <TableHead>Outcome</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+    <>
+      {/* Mobile card layout */}
+      <div className="space-y-3 md:hidden">
         {calls.map((call) => {
           const isExpanded = expandedId === call.id;
           const summary = getTranscriptSummary(call.transcript);
 
           return (
-            <Fragment key={call.id}>
-              <TableRow
-                className="cursor-pointer"
-                onClick={() =>
-                  setExpandedId(isExpanded ? null : call.id)
-                }
-                data-testid={`call-row-${call.id}`}
-              >
-                <TableCell>
-                  {isExpanded ? (
-                    <ChevronDown className="h-4 w-4" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4" />
-                  )}
-                </TableCell>
-                <TableCell>
-                  {new Date(call.created_at).toLocaleString()}
-                </TableCell>
-                <TableCell>{call.caller_phone ?? "Unknown"}</TableCell>
-                <TableCell>{formatDuration(call.duration_sec)}</TableCell>
-                <TableCell>
-                  <Badge variant={outcomeBadgeVariant[call.outcome]}>
-                    {outcomeLabel[call.outcome]}
-                  </Badge>
-                </TableCell>
-              </TableRow>
+            <div
+              key={call.id}
+              data-testid={`call-card-${call.id}`}
+              className="rounded-lg border bg-card p-4 cursor-pointer"
+              onClick={() => setExpandedId(isExpanded ? null : call.id)}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-medium">
+                  {call.caller_phone ?? "Unknown"}
+                </span>
+                <Badge variant={outcomeBadgeVariant[call.outcome]}>
+                  {outcomeLabel[call.outcome]}
+                </Badge>
+              </div>
+              <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
+                <span>
+                  {new Date(call.created_at).toLocaleDateString()}
+                </span>
+                <span>{formatDuration(call.duration_sec)}</span>
+              </div>
               {isExpanded && summary && (
-                <TableRow>
-                  <TableCell
-                    colSpan={5}
-                    className="bg-muted/50 text-sm text-muted-foreground"
-                  >
-                    {summary}
-                  </TableCell>
-                </TableRow>
+                <div className="mt-3 rounded bg-muted/50 p-3 text-sm text-muted-foreground">
+                  {summary}
+                </div>
               )}
-            </Fragment>
+            </div>
           );
         })}
-      </TableBody>
-    </Table>
+      </div>
+
+      {/* Desktop table layout */}
+      <div className="hidden md:block">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-8" />
+              <TableHead>Time</TableHead>
+              <TableHead>Caller</TableHead>
+              <TableHead>Duration</TableHead>
+              <TableHead>Outcome</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {calls.map((call) => {
+              const isExpanded = expandedId === call.id;
+              const summary = getTranscriptSummary(call.transcript);
+
+              return (
+                <Fragment key={call.id}>
+                  <TableRow
+                    className="cursor-pointer"
+                    onClick={() =>
+                      setExpandedId(isExpanded ? null : call.id)
+                    }
+                    data-testid={`call-row-${call.id}`}
+                  >
+                    <TableCell>
+                      {isExpanded ? (
+                        <ChevronDown className="h-4 w-4" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(call.created_at).toLocaleString()}
+                    </TableCell>
+                    <TableCell>{call.caller_phone ?? "Unknown"}</TableCell>
+                    <TableCell>{formatDuration(call.duration_sec)}</TableCell>
+                    <TableCell>
+                      <Badge variant={outcomeBadgeVariant[call.outcome]}>
+                        {outcomeLabel[call.outcome]}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                  {isExpanded && summary && (
+                    <TableRow>
+                      <TableCell
+                        colSpan={5}
+                        className="bg-muted/50 text-sm text-muted-foreground"
+                      >
+                        {summary}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </Fragment>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   );
 }
