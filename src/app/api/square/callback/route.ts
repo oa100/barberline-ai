@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { SquareClient, SquareEnvironment } from "square";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
+import { encrypt } from "@/lib/crypto";
 
 export async function GET(req: NextRequest) {
   const { userId } = await auth();
@@ -72,7 +73,7 @@ export async function GET(req: NextRequest) {
       .from("shops")
       .update({
         provider_type: "square",
-        provider_token: accessToken,
+        provider_token: encrypt(accessToken),
         provider_location_id: locationId,
       })
       .eq("clerk_user_id", userId);
