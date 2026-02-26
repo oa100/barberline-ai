@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Sheet,
   SheetContent,
@@ -15,7 +16,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gold/10 bg-[#0A0A0A]/95 backdrop-blur supports-[backdrop-filter]:bg-[#0A0A0A]/80">
+    <header className="sticky top-0 z-50 w-full border-b border-gold/10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="container mx-auto flex h-20 items-center justify-between px-6">
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-3 group">
@@ -23,7 +24,7 @@ export function Header() {
             <div className="relative h-8 w-3 overflow-hidden rounded-full">
               <div className="barber-stripe absolute inset-0" />
             </div>
-            <span className="font-serif text-2xl tracking-wide text-cream">
+            <span className="font-serif text-2xl tracking-wide text-foreground">
               BarberLine <span className="text-gold">AI</span>
             </span>
           </Link>
@@ -52,9 +53,10 @@ export function Header() {
           >
             <Link href="/sign-in">Log In</Link>
           </Button>
+          <ThemeToggle />
           <Button
             asChild
-            className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-6 tracking-wide uppercase text-xs"
+            className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-6 tracking-wide uppercase text-xs"
           >
             <Link href="/signup">Get Started</Link>
           </Button>
@@ -64,14 +66,14 @@ export function Header() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Open menu"
-          className="flex h-10 w-10 items-center justify-center rounded-md md:hidden text-cream hover:bg-white/10"
+          className="flex h-10 w-10 items-center justify-center rounded-md md:hidden text-foreground hover:bg-white/10"
         >
           <Menu className="h-5 w-5" />
         </button>
 
         {/* Mobile menu */}
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetContent side="right" className="w-72 bg-[#0A0A0A] border-gold/10">
+          <SheetContent side="right" className="w-72 bg-background border-gold/10">
             <SheetHeader className="border-b border-gold/10 pb-4">
               <SheetTitle className="font-serif text-xl text-cream">
                 BarberLine <span className="text-gold">AI</span>
@@ -104,7 +106,7 @@ export function Header() {
                 </Button>
                 <Button
                   asChild
-                  className="w-full bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-6 tracking-wide uppercase text-xs"
+                  className="w-full bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-6 tracking-wide uppercase text-xs"
                 >
                   <Link href="/signup" onClick={() => setOpen(false)}>
                     Get Started

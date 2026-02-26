@@ -76,7 +76,7 @@ export default function HowItWorksPage() {
           <Button
             asChild
             size="lg"
-            className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
+            className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
           >
             <Link href="/signup">Get Started Now</Link>
           </Button>

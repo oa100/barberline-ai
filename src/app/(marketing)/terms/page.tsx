@@ -353,7 +353,7 @@ export default function TermsOfServicePage() {
             If you have any questions about these Terms of Service, please
             contact us at:
           </p>
-          <div className="mt-4 border border-gold/10 bg-[#111111] p-6 text-sm leading-relaxed text-warm-gray">
+          <div className="mt-4 border border-gold/10 bg-card p-6 text-sm leading-relaxed text-warm-gray">
             <p className="text-cream font-serif">BarberLine AI</p>
             <p className="mt-2">
               Email:{" "}

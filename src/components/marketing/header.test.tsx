@@ -2,6 +2,10 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Header } from "./header";
 
+vi.mock("next-themes", () => ({
+  useTheme: () => ({ theme: "light", setTheme: vi.fn() }),
+}));
+
 vi.mock("next/link", () => ({
   default: ({
     children,
@@ -38,6 +42,11 @@ describe("Header", () => {
 
     const signupLink = screen.getByText("Get Started").closest("a");
     expect(signupLink).toHaveAttribute("href", "/signup");
+  });
+
+  it("renders theme toggle button", () => {
+    render(<Header />);
+    expect(screen.getByRole("button", { name: /toggle theme/i })).toBeInTheDocument();
   });
 
   it("renders hamburger menu button on mobile", () => {

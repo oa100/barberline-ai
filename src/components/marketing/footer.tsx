@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-gold/10 bg-[#080808]">
+    <footer className="relative border-t border-gold/10 bg-secondary">
       {/* Gold line accent at top */}
       <div className="gold-line w-full" />
 

@@ -11,6 +11,7 @@ import {
   CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -68,8 +69,9 @@ export function Sidebar() {
       <SidebarContent />
 
       {/* User button */}
-      <div className="border-t px-6 py-4">
+      <div className="flex items-center justify-between border-t px-6 py-4">
         <UserButton afterSignOutUrl="/" />
+        <ThemeToggle />
       </div>
     </aside>
   );

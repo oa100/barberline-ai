@@ -61,7 +61,7 @@ export default function LandingPage() {
             <Button
               size="lg"
               asChild
-              className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-10 py-6 text-sm uppercase tracking-[0.15em]"
+              className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-10 py-6 text-sm uppercase tracking-[0.15em]"
             >
               <Link href="/signup">Start Free Trial</Link>
             </Button>
@@ -81,7 +81,7 @@ export default function LandingPage() {
       </section>
 
       {/* Problem */}
-      <section className="relative border-y border-gold/10 bg-[#0E0E0E] py-24">
+      <section className="relative border-y border-gold/10 bg-secondary py-24">
         <div className="container mx-auto max-w-3xl px-6 text-center">
           <h2 className="animate-fade-in-up font-serif text-3xl leading-snug tracking-tight md:text-5xl text-cream">
             You&apos;re mid-cut. The phone rings...
@@ -139,7 +139,7 @@ export default function LandingPage() {
             {features.map((feature, i) => (
               <div
                 key={feature.title}
-                className={`card-glow animate-fade-in-up stagger-${i + 1} group relative border border-gold/10 bg-[#111111] p-8 transition-all duration-300`}
+                className={`card-glow animate-fade-in-up stagger-${i + 1} group relative border border-gold/10 bg-card p-8 transition-all duration-300`}
               >
                 {/* Icon */}
                 <div className="mb-6 flex h-12 w-12 items-center justify-center border border-gold/20 bg-gold/5">
@@ -178,7 +178,7 @@ export default function LandingPage() {
             <Button
               size="lg"
               asChild
-              className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
+              className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
             >
               <Link href="/signup">Start Free Trial</Link>
             </Button>
