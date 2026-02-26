@@ -150,7 +150,7 @@ export function CallTable({ calls }: CallTableProps) {
                     <TableRow>
                       <TableCell
                         colSpan={5}
-                        className="bg-muted/50 text-sm text-muted-foreground"
+                        className="max-w-0 whitespace-normal break-words bg-muted/50 text-sm text-muted-foreground"
                       >
                         {summary}
                       </TableCell>

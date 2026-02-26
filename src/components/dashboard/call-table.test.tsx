@@ -88,6 +88,27 @@ describe("CallTable", () => {
     ).toBeGreaterThanOrEqual(1);
   });
 
+  it("wraps long transcript text in expanded desktop row", () => {
+    const longText =
+      "Customer called about availability for a haircut appointment next Tuesday afternoon around 3pm and also asked about pricing for color treatment services and beard trimming";
+    const call = makeCall({
+      transcript: { summary: longText },
+    });
+    render(<CallTable calls={[call]} />);
+
+    // Expand the row
+    fireEvent.click(screen.getByTestId("call-row-call-1"));
+
+    // Find the expanded cell in the desktop table
+    const cells = screen.getAllByText(longText);
+    const desktopCell = cells.find(
+      (el) => el.tagName === "TD" && el.getAttribute("colspan") === "5",
+    );
+    expect(desktopCell).toBeDefined();
+    expect(desktopCell!.className).toContain("whitespace-normal");
+    expect(desktopCell!.className).toContain("break-words");
+  });
+
   it("formats duration correctly", () => {
     expect(formatDuration(125)).toBe("2:05");
     expect(formatDuration(0)).toBe("0:00");
