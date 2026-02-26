@@ -296,11 +296,13 @@ Costs already incurred or required before first revenue.
 
 ### Revenue Per Shop
 
-| Plan | Monthly | Annual (2 mo free) | Monthly Effective |
+| Plan | Monthly | Annual (20% off) | Monthly Effective |
 |------|---------|-------------------|-------------------|
-| Starter | $49/mo | $490/yr | $40.83/mo |
-| Pro | $99/mo | $990/yr | $82.50/mo |
-| Lite (future, booth renters) | $29/mo | $290/yr | $24.17/mo |
+| Starter | $49/mo | $468/yr ($39 x 12) | $39/mo |
+| Pro | $99/mo | $948/yr ($79 x 12) | $79/mo |
+| Lite (future, booth renters) | $29/mo | TBD | TBD |
+
+> See `docs/plans/2026-02-26-annual-pricing-plan.md` for full annual pricing implementation plan.
 
 **Blended ARPU assumption: $69/mo** (based on ~60% Starter at $49, ~40% Pro at $99).
 
