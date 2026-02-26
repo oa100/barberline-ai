@@ -8,6 +8,10 @@ vi.mock("@clerk/nextjs", () => ({
   ),
 }));
 
+vi.mock("next-themes", () => ({
+  useTheme: () => ({ theme: "light", setTheme: vi.fn() }),
+}));
+
 vi.mock("next/navigation", () => ({
   usePathname: () => "/dashboard",
 }));
@@ -52,6 +56,11 @@ describe("Sidebar", () => {
     for (const item of navItems) {
       expect(screen.getByText(item.label)).toBeInTheDocument();
     }
+  });
+
+  it("renders theme toggle button", () => {
+    render(<Sidebar />);
+    expect(screen.getByRole("button", { name: /toggle theme/i })).toBeInTheDocument();
   });
 
   it("highlights active route", () => {
