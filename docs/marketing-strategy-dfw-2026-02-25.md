@@ -40,7 +40,7 @@ If the AI cannot help (edge case, complex request), it takes a message and texts
 
 **Barbers miss 40-60% of incoming calls while cutting hair.** Every missed call is a potential $30-60 haircut lost to the shop down the street. Hiring a receptionist costs $2,500-3,500/month. Most barbershops (especially independent shops and small chains with 1-5 chairs) cannot justify that expense. They end up relying on walk-ins, social media DMs, or the hope that customers will call back. Many do not.
 
-BarberLine AI gives every barbershop the equivalent of a full-time receptionist for $49-79/month -- less than the cost of two haircuts per month.
+BarberLine AI gives every barbershop the equivalent of a full-time receptionist for $49-99/month -- less than the cost of three haircuts per month.
 
 ### Key Differentiators vs. Competitors
 
@@ -52,7 +52,7 @@ BarberLine AI gives every barbershop the equivalent of a full-time receptionist 
 | Online booking | Yes (via Square) | Yes | Yes | Yes | Yes |
 | SMS confirmations | Yes | Yes | Yes | Yes | Yes |
 | Call transcripts & analytics | Yes | No | No | No | No |
-| Monthly cost | $49-79 | Free-$$$ | $29.99+ | $25+ | Free-$69 |
+| Monthly cost | $49-99 | Free-$$$ | $29.99+ | $25+ | Free-$69 |
 | Works with existing Square setup | Yes (native integration) | No | No | No | N/A |
 | Setup time | Under 10 minutes | 1-2 hours | 1-2 hours | 1-2 hours | Already set up |
 
@@ -99,7 +99,7 @@ BarberLine AI gives every barbershop the equivalent of a full-time receptionist 
 
 **Current pricing (from design doc):**
 
-| | Starter $49/mo | Pro $79/mo |
+| | Starter $49/mo | Pro $99/mo |
 |---|---|---|
 | AI call answering | 200 calls/mo | Unlimited |
 | Square booking | Yes | Yes |
@@ -114,7 +114,7 @@ BarberLine AI gives every barbershop the equivalent of a full-time receptionist 
 
 1. **14-day free trial on both plans (no credit card required).** Barbershop owners are skeptical of new tech. Removing friction is essential. The product sells itself once they see missed calls getting captured.
 
-2. **Annual discount: 2 months free ($490/yr Starter, $790/yr Pro).** Improves cash flow and reduces churn. Position as "less than $1.50/day."
+2. **Annual discount: 2 months free ($490/yr Starter, $990/yr Pro).** Improves cash flow and reduces churn. Position as "less than $2.75/day."
 
 3. **Consider a $29/mo "Lite" plan for booth renters.** 50 calls/month, basic features. This captures the barber-suite market and serves as an entry point that upgrades to Starter as volume grows.
 
@@ -444,7 +444,7 @@ BarberLine AI gives every barbershop the equivalent of a full-time receptionist 
 
 4. **Setup demo (2 min):** Show how fast setup is. "Connect Square, customize your greeting, get a phone number. Under 10 minutes."
 
-5. **Pricing and trial (2 min):** "$49/month for Starter, $79/month for Pro. But you get 14 days free, no credit card. If it does not book at least 2 extra haircuts in those 2 weeks, do not keep it."
+5. **Pricing and trial (2 min):** "$49/month for Starter, $99/month for Pro. But you get 14 days free, no credit card. If it does not book at least 3 extra haircuts in those 2 weeks, do not keep it."
 
 6. **Close (1 min):** "Want me to set it up right now? I can have your AI answering calls in 10 minutes."
 
@@ -580,6 +580,26 @@ Reasoning:
    - Any appointment-based local service business
 
    Franchise or white-label the technology under different brand names for each vertical. The core Vapi + Square integration is reusable. Only the voice prompts, industry-specific language, and marketing need to change.
+
+### Future Vertical: Women's Hair Salons
+
+**Status:** Not pursuing now. Revisit after proving PMF with barbershops (target: 50+ paying shops).
+
+Women's salons face the identical missed-call problem -- a stylist mid-highlight can't answer the phone any more than a barber mid-fade. The economics are arguably stronger: average ticket is $80-150+ vs $30-60 for barbershops, so each missed call has higher revenue impact. The ROI story is even more compelling.
+
+**Why not now:**
+- Specificity wins early. "Built for barbershops" resonates because barbers see themselves in the product. Generalizing to "salons & barbershops" dilutes that identity and makes us look like another generic SaaS tool.
+- The barbershop community has strong word-of-mouth networks and culture that we can leverage. Splitting focus across two verticals slows down that flywheel.
+
+**Why it's a strong adjacent vertical:**
+- The core product (AI voice + Square booking) works for salons today without code changes. The tech is horizontal; only the marketing wrapper needs to change.
+- There are ~4-5x more hair salons than barbershops in any given metro, so TAM multiplies significantly.
+- Average ticket is higher, meaning higher willingness to pay and stronger ROI framing.
+
+**Expansion approach when ready:**
+- Create a separate `/salons` landing page with salon-specific copy, imagery, and testimonials. Do not redesign the main brand.
+- The current gold/dark design language reads as "luxury craft" rather than strictly masculine -- it can work across both verticals with minor copy adjustments.
+- Test demand with a lightweight landing page and waitlist before committing resources.
 
 ---
 
@@ -834,13 +854,81 @@ Reasoning:
 
 ## Appendix C: Competitive Landscape Notes
 
-**Goodcall / Smith.ai / Ruby Receptionists:** These are generic AI or human answering services. They are not built for barbershops, do not integrate with Square, and cost significantly more ($100-500/month). BarberLine AI wins on price, industry specificity, and booking integration.
+### Answering Service Competitors: Detailed Pricing Breakdown
+
+**Goodcall** (Pure AI, $79-249/mo):
+- Closest direct competitor to BarberLine AI. 100% AI, no humans.
+- Billing: Per unique customer (100/250/500 per tier), unlimited minutes.
+- Features: Custom logic flows, CRM/calendar integrations, call analytics.
+- Weakness: Reviews note it "often lacks conversational fluidness." Not built for any specific vertical.
+- Relevance: Validates the AI-receptionist price range. BarberLine AI is competitively priced ($49-99) and barbershop-specific.
+
+**Smith.ai** (AI + Human Hybrid, $95-2,100+/mo):
+- Two products: AI Receptionist ($95-800/mo, per-call billing at $1.60-1.90/call) and Virtual Receptionist ($300-2,100+/mo, human-staffed at $7-10/call).
+- 5,000+ integrations, deeply embedded in the legal industry (Clio, MyCase, Smokeball). State Bar partner in multiple states.
+- Key differentiator: Human escalation at $3/call on AI tier. Lead qualification and intake during calls. Bilingual (English/Spanish) at $1/call add-on.
+- Why they charge more: Real humans, deep legal CRM integrations, lead qualification workflows. Target customer is law firms where one missed call = $5K-50K in lost revenue.
+
+**Ruby Receptionists** (100% Live Humans, $235-1,640/mo):
+- Every call answered by a US-based live person. AI used behind the scenes for transcription/routing only.
+- Pricing: 50 min/$235, 100 min/$309, 200 min/$705, 500 min/$1,640. You pay for every minute including spam.
+- HIPAA-compliant (opens healthcare vertical). Bilingual included.
+- Why they charge more: You are paying for warm bodies. A full-time receptionist costs ~$3K/mo, so even $705/mo for 200 minutes is positioned as a bargain for law firms and medical practices.
+
+**What justifies the $100-500+ premium across these services:**
+
+1. **Human involvement** -- Real people cost real money. This is the single biggest price driver.
+2. **Deep vertical integrations** -- Auto-populating legal case management systems, triggering CRM workflows across 5,000+ tools.
+3. **Human escalation as safety net** -- For industries where one botched call loses a $10K+ client, the $3/call escalation fee is insurance.
+4. **Compliance certifications** -- HIPAA for healthcare, State Bar partnerships for legal. Expensive to obtain and maintain.
+5. **Lead qualification** -- Not just answering, but screening, qualifying, and capturing detailed intake info. Closer to outsourced sales than answering service.
+
+**Why BarberLine AI is priced differently (not underpriced):**
+
+These services target law firms ($5K-50K per client) and medical practices. Barbershops operate at $35-60/transaction. The pricing math is completely different -- our $49-99 price point delivers strong ROI for the barbershop market (2-3 extra haircuts/month = breakeven). We compete on vertical specificity and Square integration, not on human fallback or compliance certs. Different category, different customer, right price.
 
 **Fresha / Booksy / Vagaro:** These are scheduling platforms, not phone-answering solutions. They solve online booking but do nothing for phone calls. BarberLine AI is complementary, not competitive. However, positioning matters -- some shop owners will see "another booking tool" and need to be educated on the difference.
 
 **Square Appointments (standalone):** Square handles online booking but does not answer phone calls. BarberLine AI is the phone layer on top of Square. This makes Square both a dependency and a potential channel partner.
 
 **No direct competitor exists** that combines AI voice answering + barbershop-specific knowledge + Square integration + real-time booking in a single product at this price point. This is the window. Move fast.
+
+### Platform Risk: "What If Square Builds This?"
+
+**Assessment: Low-to-moderate risk. Not a reason to hesitate.**
+
+**Why Square is unlikely to build this (or unlikely to build it well):**
+
+1. **Square is horizontal, not vertical.** They serve restaurants, retail, salons, barbershops, food trucks, contractors -- everyone. They build features that apply to millions of merchants, not niche tools for barbershops. An AI phone agent that books appointments through natural conversation serves a subset of a subset of their user base.
+
+2. **They've had 17 years and haven't done it.** Square has been around since 2009. They still don't answer phone calls for their merchants. Their playbook is payments, lending, payroll, and online commerce -- not AI voice agents. When big companies enter a space like this, they typically acquire or partner rather than build from scratch.
+
+3. **Even if they build it, it won't be barbershop-specific.** A Square AI receptionist would be generic -- "works for any business." It wouldn't know what a fade is, wouldn't understand that walk-ins and appointments coexist, wouldn't handle "can I get whoever's available next?" the way a barbershop customer expects. Vertical specificity is a real moat.
+
+4. **History favors the vertical startup.** Toast beat Square in restaurants. Mindbody beat generic schedulers in fitness. Jobber beat generic tools in home services. Vertical-specific products consistently win against horizontal platforms because they understand the customer's world deeply. Square being a dependency actually helps -- we add value on top of their platform, not compete with it.
+
+### Honest Risk Assessment
+
+| Risk | Severity | Mitigation |
+|------|----------|------------|
+| **Walk-in culture is strong enough that barbers don't care about missed calls** | Medium | Validate in beta (Phase 1). If shops don't see meaningful bookings from AI-captured calls, the problem may be overstated for certain shop types. |
+| **AI voice quality isn't good enough yet** | Medium | Vapi + GPT-4o-mini is solid today and improving monthly. Monitor hang-up rates -- if 20%+ of callers hang up confused, we have a product problem, not a market problem. |
+| **High churn from low switching costs** | High | At $49-99/mo, barbers will cancel the moment they feel it's not working. Retention depends on visible ROI in the dashboard. Invest in clear, automated "here's what you'd lose" messaging before cancellation. |
+| **Square API dependency** | High | If Square changes their API, raises prices, or restricts access, we're exposed. The provider abstraction layer helps, but Square is still the primary integration. Monitor Square developer announcements closely. Begin exploring secondary integrations (Vagaro, Booksy APIs) by Month 6. |
+| **Another startup with the same idea** | Low-Medium | Someone else is probably thinking about this. Speed and local relationships matter more than the idea itself. First to 100 happy shops in DFW wins. |
+| **Square builds or acquires a competing feature** | Low | See analysis above. Even if it happens, likely 12-18 months away and generic. By then, deep barbershop-specific features and community relationships create defensibility. Could also become an acquisition target -- a positive outcome. |
+
+### Market Validation Thesis
+
+The market math is sound:
+
+- 1,200-1,500 addressable shops in DFW alone
+- 40-60% of calls go unanswered (well-documented across service businesses)
+- Each missed call = $30-60 in lost revenue
+- A receptionist costs $2,500-3,500/mo -- prohibitive for a 1-3 chair shop
+- BarberLine AI costs $49-99/mo -- less than 3 haircuts
+
+**The question is not whether the market exists. It's whether barbers feel the pain enough to pay for a solution.** That is what the Phase 1 beta answers. The goal is 50 barbershops in DFW who love the product. Everything else -- national expansion, salon verticals, Square partnerships -- comes after that validation.
 
 ---
 

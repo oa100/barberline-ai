@@ -211,7 +211,7 @@ app/(marketing)/
 
 **Pricing:**
 
-| | Starter $49/mo | Pro $79/mo |
+| | Starter $49/mo | Pro $99/mo |
 |---|---|---|
 | AI call answering | 200 calls/mo | Unlimited |
 | Square booking | Yes | Yes |

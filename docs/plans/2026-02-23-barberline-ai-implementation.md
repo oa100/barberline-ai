@@ -2241,7 +2241,7 @@ const plans = [
   },
   {
     name: "Pro",
-    price: 79,
+    price: 99,
     description: "For busy shops that want it all",
     features: [
       "Unlimited AI calls",
@@ -2694,7 +2694,7 @@ export default async function BillingPage() {
           </p>
           <div className="flex gap-3">
             <Button variant="outline">Starter — $49/mo</Button>
-            <Button>Pro — $79/mo</Button>
+            <Button>Pro — $99/mo</Button>
           </div>
           <p className="text-xs text-muted-foreground">
             Stripe checkout integration coming soon.

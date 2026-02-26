@@ -66,7 +66,7 @@ This document provides a comprehensive strategy for building mobile applications
 |-------|------|-------------|
 | `/` | `src/app/(marketing)/page.tsx` | Landing page with hero, problem statement (60% missed calls / $1,200 lost monthly), feature cards (24/7 calls, instant booking, SMS confirmations, analytics), CTA |
 | `/how-it-works` | `src/app/(marketing)/how-it-works/page.tsx` | 3-step onboarding flow explanation (Connect Square, Customize AI, Go Live) |
-| `/pricing` | `src/app/(marketing)/pricing/page.tsx` | Two plans: Starter ($49/mo, 200 calls) and Pro ($79/mo, unlimited calls, custom voice, multi-barber) |
+| `/pricing` | `src/app/(marketing)/pricing/page.tsx` | Two plans: Starter ($49/mo, 200 calls) and Pro ($99/mo, unlimited calls, custom voice, multi-barber) |
 
 **Observations:**
 - The marketing layout uses a dark theme with gold accents (`#0A0A0A` background, gold highlights), a grain texture overlay, and "barber stripe" decorative elements.

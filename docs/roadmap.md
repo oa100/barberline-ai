@@ -35,7 +35,7 @@
 
 ### P1: Pre-Launch Polish
 
-- [ ] **Auth page branding** — Sign-in/signup are bare Clerk components, no dark/gold branding. Jarring UX.
+- [x] **Auth page branding** — Dark/gold branded layout, Clerk appearance theming, logo, privacy/terms links.
 - [ ] **SMS confirmation to customers** — Currently only texts the barber. Customers get nothing after booking.
 - [ ] **Replace PWA placeholder icons** — Current icons are auto-generated "BL" placeholders. Need branded icons (gold barber pole on dark).
 - [ ] **Footer dead link audit** — Ensure all footer links resolve after missing pages are created.
