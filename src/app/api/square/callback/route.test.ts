@@ -23,6 +23,10 @@ vi.mock("square", () => ({
   SquareEnvironment: { Sandbox: "sandbox", Production: "production" },
 }));
 
+vi.mock("@/lib/crypto", () => ({
+  encrypt: vi.fn((text: string) => `encrypted:${text}`),
+}));
+
 vi.mock("@/lib/supabase/server", () => {
   const mockEq = vi.fn().mockResolvedValue({ error: null });
   const mockUpdate = vi.fn().mockReturnValue({ eq: mockEq });
