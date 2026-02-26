@@ -73,4 +73,10 @@ describe("PricingPage", () => {
       expect(screen.getByText(feature)).toBeInTheDocument();
     }
   });
+
+  it("shows free trial messaging", () => {
+    render(<PricingPage />);
+    const trials = screen.getAllByText(/14-day free trial/);
+    expect(trials).toHaveLength(2);
+  });
 });
