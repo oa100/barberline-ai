@@ -27,6 +27,39 @@ describe("validateVapiRequest", () => {
     const req = new NextRequest("http://localhost/api/vapi/webhook");
     expect(validateVapiRequest(req)).toBe(false);
   });
+
+  it("returns false when server secret env var is not set", () => {
+    vi.stubEnv("VAPI_SERVER_SECRET", "");
+    const req = new NextRequest("http://localhost/api/vapi/webhook", {
+      headers: { "x-vapi-secret": "any-value" },
+    });
+
+    expect(validateVapiRequest(req)).toBe(false);
+  });
+
+  it("uses timing-safe comparison (crypto.timingSafeEqual)", () => {
+    const spy = vi.spyOn(
+      require("crypto"),
+      "timingSafeEqual"
+    );
+
+    const req = new NextRequest("http://localhost/api/vapi/webhook", {
+      headers: { "x-vapi-secret": "test-secret-123" },
+    });
+
+    validateVapiRequest(req);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("handles secrets of different lengths safely", () => {
+    const req = new NextRequest("http://localhost/api/vapi/webhook", {
+      headers: { "x-vapi-secret": "short" },
+    });
+
+    // Should not throw - different lengths should return false
+    expect(validateVapiRequest(req)).toBe(false);
+  });
 });
 
 describe("unauthorizedResponse", () => {

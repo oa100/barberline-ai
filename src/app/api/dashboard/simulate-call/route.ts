@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
+import { processEndOfCallReport } from "@/lib/vapi/process-end-of-call";
 
 const SAMPLE_CALLERS = [
   { name: "Marcus Johnson", phone: "+12125551001" },
@@ -63,60 +63,45 @@ export async function POST(req: Request) {
   const duration = 30 + Math.random() * 150;
   const summary = scenario.summary.replace("{service}", service);
 
-  // Build a Vapi end-of-call-report payload
-  const vapiPayload = {
-    message: {
-      type: "end-of-call-report",
-      call: {
-        id: `sim_${Date.now()}`,
-        customer: { number: caller.phone },
-      },
-      assistant: {
-        metadata: { shopId },
-      },
-      summary,
-      durationSeconds: duration,
-      transcript: [
-        { role: "assistant", content: "Hello! Thanks for calling. I'm the AI assistant for this barbershop. How can I help you today?" },
-        { role: "user", content: `Hi, I'd like to book a ${service} please.` },
-        ...(scenario.outcome === "booked"
-          ? [
-              { role: "assistant", content: `Great! I have availability tomorrow at 2:00 PM for a ${service}. Shall I book that for you?` },
-              { role: "user", content: "Yes, that works perfectly." },
-              { role: "assistant", content: `Done! You're booked for a ${service} tomorrow at 2:00 PM. You'll receive an SMS confirmation shortly.` },
-            ]
-          : scenario.outcome === "no_availability"
-          ? [
-              { role: "assistant", content: "I'm sorry, it looks like we're fully booked for the next few days." },
-              { role: "user", content: "Okay, I'll try again next week." },
-            ]
-          : [
-              { role: "assistant", content: "We're open Monday through Saturday, 9 AM to 7 PM. A Classic Fade is $35, a Beard Trim is $20." },
-              { role: "user", content: "Great, thanks for the info!" },
-            ]),
-      ],
+  // Build a Vapi end-of-call-report message
+  const message = {
+    type: "end-of-call-report",
+    call: {
+      id: `sim_${Date.now()}`,
+      customer: { number: caller.phone },
     },
+    assistant: {
+      metadata: { shopId },
+    },
+    summary,
+    durationSeconds: duration,
+    transcript: [
+      { role: "assistant", content: "Hello! Thanks for calling. I'm the AI assistant for this barbershop. How can I help you today?" },
+      { role: "user", content: `Hi, I'd like to book a ${service} please.` },
+      ...(scenario.outcome === "booked"
+        ? [
+            { role: "assistant", content: `Great! I have availability tomorrow at 2:00 PM for a ${service}. Shall I book that for you?` },
+            { role: "user", content: "Yes, that works perfectly." },
+            { role: "assistant", content: `Done! You're booked for a ${service} tomorrow at 2:00 PM. You'll receive an SMS confirmation shortly.` },
+          ]
+        : scenario.outcome === "no_availability"
+        ? [
+            { role: "assistant", content: "I'm sorry, it looks like we're fully booked for the next few days." },
+            { role: "user", content: "Okay, I'll try again next week." },
+          ]
+        : [
+            { role: "assistant", content: "We're open Monday through Saturday, 9 AM to 7 PM. A Classic Fade is $35, a Beard Trim is $20." },
+            { role: "user", content: "Great, thanks for the info!" },
+          ]),
+    ],
   };
 
-  // Call the actual Vapi webhook endpoint
-  const headersList = await headers();
-  const host = headersList.get("host") || "localhost:3000";
-  const protocol = host.startsWith("localhost") ? "http" : "https";
-
-  const webhookRes = await fetch(`${protocol}://${host}/api/vapi/webhook`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-vapi-secret": process.env.VAPI_SERVER_SECRET!,
-    },
-    body: JSON.stringify(vapiPayload),
-  });
-
-  const webhookData = await webhookRes.json();
-
-  if (!webhookRes.ok) {
+  // Call the webhook logic directly instead of via HTTP (prevents SSRF)
+  try {
+    await processEndOfCallReport(message);
+  } catch {
     return NextResponse.json(
-      { error: `Webhook returned ${webhookRes.status}`, detail: webhookData },
+      { error: "Failed to process simulated call" },
       { status: 500 }
     );
   }

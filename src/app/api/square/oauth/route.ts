@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
 
 const SCOPES = [
   "APPOINTMENTS_READ",
@@ -22,11 +23,24 @@ export async function GET() {
       ? "https://connect.squareup.com"
       : "https://connect.squareupsandbox.com";
 
+  // Generate a cryptographic nonce for CSRF protection
+  const csrfState = crypto.randomUUID();
+
+  // Store it in a secure HttpOnly cookie for validation in the callback
+  const cookieStore = await cookies();
+  cookieStore.set("square_oauth_state", csrfState, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    maxAge: 600, // 10 minutes
+    path: "/",
+  });
+
   const params = new URLSearchParams({
     client_id: clientId,
     scope: SCOPES.join(" "),
     session: "false",
-    state: userId,
+    state: csrfState,
   });
 
   const oauthUrl = `${baseUrl}/oauth2/authorize?${params.toString()}&redirect_uri=${encodeURIComponent(redirectUri)}`;

@@ -10,27 +10,28 @@ vi.mock("@/lib/supabase/server", () => {
   const mockEq2 = vi.fn().mockReturnValue({ single: mockSingle });
   const mockEq1 = vi.fn().mockReturnValue({ eq: mockEq2 });
   const mockSelect = vi.fn().mockReturnValue({ eq: mockEq1 });
-  const mockFrom = vi.fn().mockReturnValue({ select: mockSelect });
+  const mockInsert = vi.fn().mockResolvedValue({ data: null, error: null });
+  const mockFrom = vi.fn().mockImplementation((table: string) => {
+    if (table === "call_logs") {
+      return { insert: mockInsert };
+    }
+    return { select: mockSelect };
+  });
 
   return {
     createClient: vi.fn().mockResolvedValue({ from: mockFrom }),
-    __mocks: { mockSingle, mockFrom },
+    __mocks: { mockSingle, mockFrom, mockInsert },
   };
 });
-
-vi.mock("next/headers", () => ({
-  headers: vi.fn().mockResolvedValue({
-    get: (name: string) => (name === "host" ? "localhost:3000" : null),
-  }),
-}));
 
 import { POST } from "./route";
 import { auth } from "@clerk/nextjs/server";
 // @ts-expect-error __mocks injected by vi.mock
 import { __mocks } from "@/lib/supabase/server";
 
-const { mockSingle } = __mocks as {
+const { mockSingle, mockInsert } = __mocks as {
   mockSingle: ReturnType<typeof vi.fn>;
+  mockInsert: ReturnType<typeof vi.fn>;
 };
 
 function makeRequest(body: unknown) {
@@ -46,13 +47,7 @@ describe("POST /api/dashboard/simulate-call", () => {
     vi.clearAllMocks();
     vi.mocked(auth).mockResolvedValue({ userId: "user_123" } as never);
     mockSingle.mockResolvedValue({ data: { id: "shop_1" }, error: null });
-
-    // Mock the fetch call to the webhook
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve({ ok: true }),
-    });
+    mockInsert.mockResolvedValue({ data: null, error: null });
   });
 
   it("returns 401 when not authenticated", async () => {
@@ -74,9 +69,7 @@ describe("POST /api/dashboard/simulate-call", () => {
     expect(res.status).toBe(404);
   });
 
-  it("calls the vapi webhook endpoint with correct payload", async () => {
-    vi.stubEnv("VAPI_SERVER_SECRET", "test-secret");
-
+  it("processes the end-of-call report directly without HTTP request", async () => {
     const res = await POST(makeRequest({ shopId: "shop_1" }));
     expect(res.status).toBe(200);
 
@@ -84,26 +77,28 @@ describe("POST /api/dashboard/simulate-call", () => {
     expect(body.ok).toBe(true);
     expect(body.summary).toMatch(/Simulated call from .+ — (booked|info_only|no_availability)/);
 
-    // Verify webhook was called
-    expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:3000/api/vapi/webhook",
-      expect.objectContaining({
-        method: "POST",
-        headers: expect.objectContaining({
-          "x-vapi-secret": "test-secret",
-        }),
-      })
-    );
+    // Verify the call log was inserted directly (no HTTP fetch)
+    expect(mockInsert).toHaveBeenCalled();
   });
 
-  it("returns 500 when webhook fails", async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 500,
-      json: () => Promise.resolve({ error: "Server error" }),
-    });
+  it("does not use Host header or make HTTP requests to itself", async () => {
+    // Ensure global.fetch is not called (no self-HTTP request / no SSRF)
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+
+    await POST(makeRequest({ shopId: "shop_1" }));
+
+    expect(fetchSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+  });
+
+  it("does not expose internal error details in responses", async () => {
+    mockInsert.mockRejectedValueOnce(new Error("DB connection failed"));
 
     const res = await POST(makeRequest({ shopId: "shop_1" }));
     expect(res.status).toBe(500);
+
+    const body = await res.json();
+    expect(body.detail).toBeUndefined();
+    expect(body.error).toBe("Failed to process simulated call");
   });
 });

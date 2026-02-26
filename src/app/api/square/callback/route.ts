@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { SquareClient, SquareEnvironment } from "square";
 import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 
 export async function GET(req: NextRequest) {
   const { userId } = await auth();
@@ -15,6 +16,20 @@ export async function GET(req: NextRequest) {
       `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/integrations?error=missing_code`
     );
   }
+
+  // CSRF validation: compare state param with cookie
+  const state = req.nextUrl.searchParams.get("state");
+  const cookieStore = await cookies();
+  const storedState = cookieStore.get("square_oauth_state")?.value;
+
+  if (!state || !storedState || state !== storedState) {
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/integrations?error=csrf_mismatch`
+    );
+  }
+
+  // Clean up the CSRF cookie
+  cookieStore.delete("square_oauth_state");
 
   try {
     // Create a Square client without an access token for the OAuth exchange

@@ -65,15 +65,58 @@ describe("POST /api/dashboard/vapi-token", () => {
     expect(res.status).toBe(404);
   });
 
-  it("returns apiKey and assistant config on success", async () => {
+  it("returns assistant config on success without apiKey", async () => {
     const res = await POST(makeRequest({ shopId: "shop_1" }));
     expect(res.status).toBe(200);
 
     const body = await res.json();
-    expect(body.apiKey).toBe("test-api-key");
+    expect(body.apiKey).toBeUndefined();
     expect(body.assistant.name).toBe("Fresh Cuts AI Receptionist");
     expect(body.assistant.firstMessage).toBe("Welcome to Fresh Cuts!");
     expect(body.assistant.metadata.shopId).toBe("shop_1");
+  });
+
+  it("never exposes VAPI_API_KEY in the response", async () => {
+    const res = await POST(makeRequest({ shopId: "shop_1" }));
+    const body = await res.json();
+    const responseText = JSON.stringify(body);
+    expect(responseText).not.toContain("test-api-key");
+  });
+
+  it("truncates shop name longer than 200 characters", async () => {
+    const longName = "A".repeat(250);
+    mockSingle.mockResolvedValue({
+      data: {
+        id: "shop_1",
+        name: longName,
+        greeting: "Hello!",
+        timezone: "America/New_York",
+      },
+      error: null,
+    });
+
+    const res = await POST(makeRequest({ shopId: "shop_1" }));
+    const body = await res.json();
+    const nameInPrompt = body.assistant.model.messages[0].content;
+    expect(nameInPrompt).not.toContain(longName);
+    expect(body.assistant.name.length).toBeLessThanOrEqual(220); // 200 + " AI Receptionist"
+  });
+
+  it("truncates greeting longer than 1000 characters", async () => {
+    const longGreeting = "G".repeat(1500);
+    mockSingle.mockResolvedValue({
+      data: {
+        id: "shop_1",
+        name: "Test Shop",
+        greeting: longGreeting,
+        timezone: "America/New_York",
+      },
+      error: null,
+    });
+
+    const res = await POST(makeRequest({ shopId: "shop_1" }));
+    const body = await res.json();
+    expect(body.assistant.firstMessage.length).toBeLessThanOrEqual(1000);
   });
 
   it("uses default greeting when shop greeting is null", async () => {

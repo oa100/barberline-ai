@@ -6,6 +6,8 @@ import {
 import { createSquareClient } from "@/lib/square/client";
 import { createBooking } from "@/lib/square/booking";
 import { createClient } from "@/lib/supabase/server";
+import { sendSms } from "@/lib/twilio/send-sms";
+import { extractShopId } from "@/lib/vapi/extract-shop-id";
 
 export async function POST(req: NextRequest) {
   if (!validateVapiRequest(req)) {
@@ -15,8 +17,24 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const params = body.message?.functionCall?.parameters ?? {};
+
+    // Validate shopId against trusted metadata
+    const { shopId, mismatch } = extractShopId(body);
+    if (mismatch) {
+      return Response.json(
+        {
+          results: [
+            {
+              result:
+                "There was a shopId mismatch. Please try again.",
+            },
+          ],
+        },
+        { status: 403 }
+      );
+    }
+
     const {
-      shopId,
       startAt,
       customerName,
       customerPhone,
@@ -95,15 +113,9 @@ export async function POST(req: NextRequest) {
     // Send SMS confirmation to the barber
     if (shop.phone_number) {
       try {
-        const baseUrl =
-          process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-        await fetch(`${baseUrl}/api/twilio/send`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            to: shop.phone_number,
-            message: `New booking: ${customerName} at ${appointmentTime.toLocaleString("en-US", { timeZone: "America/New_York" })} for ${serviceName || "an appointment"}. Booked via BarberLine AI.`,
-          }),
+        await sendSms({
+          to: shop.phone_number,
+          body: `New booking: ${customerName} at ${appointmentTime.toLocaleString("en-US", { timeZone: "America/New_York" })} for ${serviceName || "an appointment"}. Booked via BarberLine AI.`,
         });
       } catch (smsErr) {
         console.error("SMS notification failed:", smsErr);

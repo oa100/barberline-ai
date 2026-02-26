@@ -5,6 +5,7 @@ import {
 } from "@/lib/vapi/validate";
 import { createClient } from "@/lib/supabase/server";
 import twilio from "twilio";
+import { extractShopId } from "@/lib/vapi/extract-shop-id";
 
 export async function POST(req: NextRequest) {
   if (!validateVapiRequest(req)) {
@@ -14,7 +15,24 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const params = body.message?.functionCall?.parameters ?? {};
-    const { shopId, callerPhone, message } = params;
+
+    // Validate shopId against trusted metadata
+    const { shopId, mismatch } = extractShopId(body);
+    if (mismatch) {
+      return Response.json(
+        {
+          results: [
+            {
+              result:
+                "There was a shopId mismatch. Please try again.",
+            },
+          ],
+        },
+        { status: 403 }
+      );
+    }
+
+    const { callerPhone, message } = params;
 
     if (!shopId || !message) {
       return Response.json(

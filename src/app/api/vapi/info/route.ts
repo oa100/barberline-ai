@@ -7,6 +7,7 @@ import { createSquareClient } from "@/lib/square/client";
 import { listServices } from "@/lib/square/catalog";
 import { getBusinessHours } from "@/lib/square/catalog";
 import { createClient } from "@/lib/supabase/server";
+import { extractShopId } from "@/lib/vapi/extract-shop-id";
 
 const DAY_NAMES: Record<string, string> = {
   MON: "Monday",
@@ -34,8 +35,22 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const params = body.message?.functionCall?.parameters ?? {};
-    const { shopId } = params;
+
+    // Validate shopId against trusted metadata
+    const { shopId, mismatch } = extractShopId(body);
+    if (mismatch) {
+      return Response.json(
+        {
+          results: [
+            {
+              result:
+                "There was a shopId mismatch. Please try again.",
+            },
+          ],
+        },
+        { status: 403 }
+      );
+    }
 
     if (!shopId) {
       return Response.json(

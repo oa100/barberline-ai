@@ -6,6 +6,7 @@ import {
 import { createSquareClient } from "@/lib/square/client";
 import { searchAvailability } from "@/lib/square/availability";
 import { createClient } from "@/lib/supabase/server";
+import { extractShopId } from "@/lib/vapi/extract-shop-id";
 
 export async function POST(req: NextRequest) {
   if (!validateVapiRequest(req)) {
@@ -15,7 +16,24 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const params = body.message?.functionCall?.parameters ?? {};
-    const { shopId, date, teamMemberId, serviceVariationId } = params;
+
+    // Validate shopId against trusted metadata
+    const { shopId, mismatch } = extractShopId(body);
+    if (mismatch) {
+      return Response.json(
+        {
+          results: [
+            {
+              result:
+                "There was a shopId mismatch. Please try again.",
+            },
+          ],
+        },
+        { status: 403 }
+      );
+    }
+
+    const { date, teamMemberId, serviceVariationId } = params;
 
     if (!shopId || !date) {
       return Response.json(
