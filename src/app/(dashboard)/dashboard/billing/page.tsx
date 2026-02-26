@@ -8,32 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
-import { CheckoutButton } from "./checkout-button";
 import { PortalButton } from "./portal-button";
-
-const plans = [
-  {
-    tier: "starter",
-    name: "Starter",
-    price: "$49",
-    features: ["200 AI calls/mo", "Square booking", "SMS confirmations", "Call log", "Basic analytics"],
-  },
-  {
-    tier: "pro",
-    name: "Pro",
-    price: "$99",
-    popular: true,
-    features: [
-      "All Starter features",
-      "Unlimited calls",
-      "Full analytics",
-      "Custom voice/greeting",
-      "Multi-barber routing",
-      "Priority support",
-    ],
-  },
-];
+import { BillingPlans } from "./billing-plans";
 
 export default async function BillingPage() {
   const shop = await getAuthenticatedShop();
@@ -90,39 +66,7 @@ export default async function BillingPage() {
       </Card>
 
       {/* Plan Cards — show when no active subscription */}
-      {!hasSubscription && (
-        <div className="grid gap-6 md:grid-cols-2">
-          {plans.map((plan) => (
-            <Card key={plan.tier} className={plan.popular ? "border-primary" : ""}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>{plan.name}</CardTitle>
-                  {plan.popular && <Badge>Most Popular</Badge>}
-                </div>
-                <CardDescription>
-                  <span className="text-3xl font-bold text-foreground">{plan.price}</span>
-                  <span className="text-muted-foreground">/mo</span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-2">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm">
-                      <Check className="h-4 w-4 text-primary" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <CheckoutButton
-                  tier={plan.tier}
-                  label={`Subscribe to ${plan.name}`}
-                  variant={plan.popular ? "default" : "outline"}
-                />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+      {!hasSubscription && <BillingPlans />}
     </div>
   );
 }

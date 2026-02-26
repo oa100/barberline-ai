@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 
 export function CheckoutButton({
   tier,
+  interval,
   label,
   variant = "default",
 }: {
   tier: string;
+  interval: "monthly" | "annual";
   label: string;
   variant?: "default" | "outline";
 }) {
@@ -20,7 +22,7 @@ export function CheckoutButton({
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tier }),
+        body: JSON.stringify({ tier, interval }),
       });
       const { url } = await res.json();
       if (url) window.location.href = url;

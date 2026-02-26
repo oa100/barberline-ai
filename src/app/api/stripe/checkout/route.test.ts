@@ -53,7 +53,9 @@ describe("POST /api/stripe/checkout", () => {
     vi.mocked(auth).mockResolvedValue({ userId: "user_123" } as never);
     vi.stubEnv("NEXT_PUBLIC_APP_URL", "http://localhost:3000");
     vi.stubEnv("STRIPE_STARTER_PRICE_ID", "price_starter");
+    vi.stubEnv("STRIPE_STARTER_ANNUAL_PRICE_ID", "price_starter_annual");
     vi.stubEnv("STRIPE_PRO_PRICE_ID", "price_pro");
+    vi.stubEnv("STRIPE_PRO_ANNUAL_PRICE_ID", "price_pro_annual");
     mockSingle.mockResolvedValue({
       data: { id: "shop-1", name: "Test Shop", clerk_user_id: "user_123", stripe_customer_id: null },
       error: null,
@@ -79,10 +81,21 @@ describe("POST /api/stripe/checkout", () => {
     expect(res.status).toBe(400);
   });
 
-  it("returns checkout URL for valid tier", async () => {
+  it("returns checkout URL for valid tier (monthly default)", async () => {
     const req = new NextRequest("http://localhost/api/stripe/checkout", {
       method: "POST",
       body: JSON.stringify({ tier: "starter" }),
+    });
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.url).toBe("https://checkout.stripe.com/session_test");
+  });
+
+  it("returns checkout URL for annual interval", async () => {
+    const req = new NextRequest("http://localhost/api/stripe/checkout", {
+      method: "POST",
+      body: JSON.stringify({ tier: "pro", interval: "annual" }),
     });
     const res = await POST(req);
     expect(res.status).toBe(200);

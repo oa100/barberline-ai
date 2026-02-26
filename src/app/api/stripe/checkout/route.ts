@@ -4,14 +4,14 @@ import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
-const VALID_TIERS = ["starter", "pro"] as const;
-
-function getPriceId(tier: string): string | undefined {
+function getPriceId(tier: string, interval: string): string | undefined {
   const priceIds: Record<string, string | undefined> = {
-    starter: process.env.STRIPE_STARTER_PRICE_ID,
-    pro: process.env.STRIPE_PRO_PRICE_ID,
+    "starter:monthly": process.env.STRIPE_STARTER_PRICE_ID,
+    "starter:annual": process.env.STRIPE_STARTER_ANNUAL_PRICE_ID,
+    "pro:monthly": process.env.STRIPE_PRO_PRICE_ID,
+    "pro:annual": process.env.STRIPE_PRO_ANNUAL_PRICE_ID,
   };
-  return priceIds[tier];
+  return priceIds[`${tier}:${interval}`];
 }
 
 export async function POST(req: NextRequest) {
@@ -25,10 +25,11 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
   const tier = body.tier as string;
-  const priceId = getPriceId(tier);
+  const interval = body.interval === "annual" ? "annual" : "monthly";
+  const priceId = getPriceId(tier, interval);
 
   if (!priceId) {
-    return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid tier or interval" }, { status: 400 });
   }
 
   const supabase = await createClient();
