@@ -1,21 +1,20 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 
-// Mock getAuthenticatedShop
 vi.mock("@/lib/dashboard/auth", () => ({
-  getAuthenticatedShop: vi.fn().mockResolvedValue({
-    id: "shop-1",
-    name: "Test Barbershop",
-    clerk_user_id: "user-1",
-  }),
+  getAuthenticatedShop: vi.fn(),
 }));
 
-// Mock next/navigation redirect
 vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
-// Mock radix-ui Slot used by Button
+vi.mock("lucide-react", () => ({
+  Check: ({ className }: { className?: string }) => (
+    <svg data-testid="check-icon" className={className} />
+  ),
+}));
+
 vi.mock("radix-ui", () => ({
   Slot: {
     Root: ({
@@ -28,29 +27,77 @@ vi.mock("radix-ui", () => ({
   },
 }));
 
+// Mock client components
+vi.mock("./checkout-button", () => ({
+  CheckoutButton: ({ label }: { label: string }) => (
+    <button data-testid="checkout-button">{label}</button>
+  ),
+}));
+
+vi.mock("./portal-button", () => ({
+  PortalButton: () => (
+    <button data-testid="portal-button">Manage Subscription</button>
+  ),
+}));
+
 import BillingPage from "./page";
+import { getAuthenticatedShop } from "@/lib/dashboard/auth";
 
 describe("BillingPage", () => {
   it("renders billing heading", async () => {
+    vi.mocked(getAuthenticatedShop).mockResolvedValue({
+      id: "shop-1",
+      name: "Test Shop",
+      subscription_status: "trialing",
+      subscription_tier: null,
+      trial_ends_at: new Date(Date.now() + 14 * 86400000).toISOString(),
+      stripe_customer_id: null,
+    } as never);
     const Page = await BillingPage();
     render(Page);
     expect(screen.getByText("Billing")).toBeInTheDocument();
   });
 
-  it("renders Free Trial badge", async () => {
+  it("shows trial badge when trialing", async () => {
+    vi.mocked(getAuthenticatedShop).mockResolvedValue({
+      id: "shop-1",
+      name: "Test Shop",
+      subscription_status: "trialing",
+      subscription_tier: null,
+      trial_ends_at: new Date(Date.now() + 14 * 86400000).toISOString(),
+      stripe_customer_id: null,
+    } as never);
     const Page = await BillingPage();
     render(Page);
     expect(screen.getByText("Free Trial")).toBeInTheDocument();
   });
 
-  it("renders both plan buttons with correct prices", async () => {
+  it("shows active badge when subscribed", async () => {
+    vi.mocked(getAuthenticatedShop).mockResolvedValue({
+      id: "shop-1",
+      name: "Test Shop",
+      subscription_status: "active",
+      subscription_tier: "pro",
+      stripe_customer_id: "cus_123",
+    } as never);
     const Page = await BillingPage();
     render(Page);
-    expect(
-      screen.getByRole("button", { name: "Starter — $49/mo" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Pro — $99/mo" })
-    ).toBeInTheDocument();
+    expect(screen.getByText("Pro")).toBeInTheDocument();
+    expect(screen.getByText("Active")).toBeInTheDocument();
+  });
+
+  it("shows plan cards when not subscribed", async () => {
+    vi.mocked(getAuthenticatedShop).mockResolvedValue({
+      id: "shop-1",
+      name: "Test Shop",
+      subscription_status: "trialing",
+      subscription_tier: null,
+      stripe_customer_id: null,
+    } as never);
+    const Page = await BillingPage();
+    render(Page);
+    expect(screen.getByText("Starter")).toBeInTheDocument();
+    expect(screen.getByText("$49")).toBeInTheDocument();
+    expect(screen.getByText("$99")).toBeInTheDocument();
   });
 });
