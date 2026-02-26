@@ -299,7 +299,7 @@ export default function PrivacyPolicyPage() {
             If you have any questions, concerns, or requests regarding this
             Privacy Policy or our data practices, please contact us at:
           </p>
-          <div className="mt-4 border border-gold/10 bg-[#111111] p-6 text-sm leading-relaxed text-warm-gray">
+          <div className="mt-4 border border-gold/10 bg-card p-6 text-sm leading-relaxed text-warm-gray">
             <p className="text-cream font-serif">BarberLine AI</p>
             <p className="mt-2">
               Email:{" "}

@@ -28,7 +28,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why Barbershops */}
-      <section className="relative bg-[#0E0E0E] py-28">
+      <section className="relative bg-secondary py-28">
         <div className="container relative mx-auto px-6">
           <div className="mx-auto max-w-2xl">
             <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
@@ -97,7 +97,7 @@ export default function AboutPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-gold text-[#0A0A0A] font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
+                className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
               >
                 <Link href="/contact">Get in Touch</Link>
               </Button>

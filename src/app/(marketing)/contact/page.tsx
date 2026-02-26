@@ -25,7 +25,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Info */}
-      <section className="relative bg-[#0E0E0E] py-28">
+      <section className="relative bg-secondary py-28">
         <div className="container relative mx-auto px-6">
           <div className="mx-auto max-w-2xl">
             <div className="grid gap-12 sm:grid-cols-2">
