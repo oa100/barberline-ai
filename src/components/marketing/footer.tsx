@@ -11,10 +11,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <div className="relative h-6 w-2 overflow-hidden rounded-full">
-                <div className="barber-stripe absolute inset-0" />
-              </div>
-              <span className="font-serif text-xl tracking-wide text-cream">
+              <span className="font-sans font-bold text-xl tracking-wide text-cream">
                 BarberLine <span className="text-gold">AI</span>
               </span>
             </div>
@@ -104,7 +101,6 @@ export function Footer() {
           <p className="text-xs text-warm-gray tracking-wide">
             &copy; {new Date().getFullYear()} BarberLine AI. All rights reserved.
           </p>
-          <div className="barber-stripe-thin h-1 w-24 rounded-full" />
         </div>
       </div>
     </footer>
