@@ -39,6 +39,7 @@
 ### P1: Pre-Launch Polish
 
 - [x] **Auth page branding** — Dark/gold branded layout, Clerk appearance theming, logo, privacy/terms links.
+- [ ] **Annual pricing option** — $468/yr Starter ($39/mo), $948/yr Pro ($79/mo) — 20% discount. Monthly/annual toggle on pricing + billing pages. See `docs/plans/2026-02-26-annual-pricing-plan.md`.
 - [ ] **SMS confirmation to customers** — Currently only texts the barber. Customers get nothing after booking.
 - [ ] **Replace PWA placeholder icons** — Current icons are auto-generated "BL" placeholders. Need branded icons (gold barber pole on dark).
 - [ ] **Footer dead link audit** — Ensure all footer links resolve after missing pages are created.
@@ -70,4 +71,5 @@
 | 2026-02-26 | PWA first to prove mobile value, React Native later |
 | 2026-02-26 | Multi-platform booking: Ship Square first, add Boulevard/Acuity via adapter pattern |
 | 2026-02-26 | One booking provider per shop for now, design schema for multiple later |
+| 2026-02-26 | Annual pricing at 20% off ($468/$948 yr). Keep monthly at $49/$99. |
 | 2026-02-25 | DFW as first market, Texas expansion, then national |
