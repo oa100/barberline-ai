@@ -39,16 +39,15 @@ export default function LandingPage() {
 
         <div className="container relative mx-auto px-6 text-center">
           {/* Eyebrow */}
-          <div className="animate-fade-in stagger-1 mb-8 inline-flex items-center gap-3 rounded-none border border-gold/20 bg-gold/5 px-5 py-2">
-            <div className="barber-stripe-thin h-3 w-3 rounded-full" />
-            <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
+          <div className="animate-fade-in stagger-1 mb-8 inline-flex items-center gap-3 rounded-full border border-gold/20 bg-gold/5 px-5 py-2">
+            <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold">
               AI-Powered Receptionist for Barbershops
             </span>
           </div>
 
-          <h1 className="animate-fade-in-up stagger-2 mx-auto max-w-4xl font-serif text-5xl leading-tight tracking-tight md:text-7xl lg:text-8xl">
+          <h1 className="animate-fade-in-up stagger-2 mx-auto max-w-4xl font-sans font-bold text-5xl leading-tight tracking-tight md:text-7xl lg:text-8xl">
             Never miss a{" "}
-            <span className="text-shimmer">booking</span>{" "}
+            <span className="text-primary">booking</span>{" "}
             again
           </h1>
 
@@ -61,7 +60,7 @@ export default function LandingPage() {
             <Button
               size="lg"
               asChild
-              className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-10 py-6 text-sm uppercase tracking-[0.15em]"
+              className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-full px-10 py-6 text-sm uppercase tracking-wide"
             >
               <Link href="/signup">Start Free Trial</Link>
             </Button>
@@ -69,21 +68,18 @@ export default function LandingPage() {
               size="lg"
               variant="outline"
               asChild
-              className="rounded-none border-gold/30 text-cream hover:bg-gold/10 hover:border-gold/50 px-10 py-6 text-sm uppercase tracking-[0.15em]"
+              className="rounded-full border-gold/30 text-cream hover:bg-gold/10 hover:border-gold/50 px-10 py-6 text-sm uppercase tracking-wide"
             >
               <Link href="/how-it-works">See How It Works</Link>
             </Button>
           </div>
         </div>
-
-        {/* Decorative barber stripe at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 barber-stripe h-1 opacity-40" />
       </section>
 
       {/* Problem */}
       <section className="relative border-y border-gold/10 bg-secondary py-24">
         <div className="container mx-auto max-w-3xl px-6 text-center">
-          <h2 className="animate-fade-in-up font-serif text-3xl leading-snug tracking-tight md:text-5xl text-cream">
+          <h2 className="animate-fade-in-up font-sans font-bold text-3xl leading-snug tracking-tight md:text-5xl text-cream">
             You&apos;re mid-cut. The phone rings...
           </h2>
           <p className="mt-8 text-lg leading-relaxed text-warm-gray">
@@ -98,19 +94,19 @@ export default function LandingPage() {
           {/* Stats row */}
           <div className="mt-14 grid grid-cols-3 gap-8">
             <div className="animate-fade-in-up stagger-1">
-              <div className="font-serif text-4xl text-gold md:text-5xl">60%</div>
+              <div className="font-sans font-bold text-4xl text-gold md:text-5xl">60%</div>
               <div className="mt-2 text-xs uppercase tracking-[0.2em] text-warm-gray">
                 Calls Missed
               </div>
             </div>
             <div className="animate-fade-in-up stagger-2">
-              <div className="font-serif text-4xl text-gold md:text-5xl">$1,200</div>
+              <div className="font-sans font-bold text-4xl text-gold md:text-5xl">$1,200</div>
               <div className="mt-2 text-xs uppercase tracking-[0.2em] text-warm-gray">
                 Lost Monthly
               </div>
             </div>
             <div className="animate-fade-in-up stagger-3">
-              <div className="font-serif text-4xl text-gold md:text-5xl">24/7</div>
+              <div className="font-sans font-bold text-4xl text-gold md:text-5xl">24/7</div>
               <div className="mt-2 text-xs uppercase tracking-[0.2em] text-warm-gray">
                 AI Coverage
               </div>
@@ -126,23 +122,23 @@ export default function LandingPage() {
 
         <div className="container relative mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold">
+            <span className="text-xs font-medium uppercase tracking-[0.1em] text-gold">
               Features
             </span>
-            <h2 className="mt-4 font-serif text-3xl tracking-tight md:text-5xl text-cream">
+            <h2 className="mt-4 font-sans font-bold text-3xl tracking-tight md:text-5xl text-cream">
               Everything your shop needs
             </h2>
-            <div className="gold-line mx-auto mt-6 w-24" />
+            <div className="mx-auto mt-6 w-16 border-b-2 border-primary" />
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((feature, i) => (
               <div
                 key={feature.title}
-                className={`card-glow animate-fade-in-up stagger-${i + 1} group relative border border-gold/10 bg-card p-8 transition-all duration-300`}
+                className={`animate-fade-in-up stagger-${i + 1} group relative border border-border hover:border-primary/30 transition-colors bg-card p-8`}
               >
                 {/* Icon */}
-                <div className="mb-6 flex h-12 w-12 items-center justify-center border border-gold/20 bg-gold/5">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center bg-primary/10 rounded-full">
                   <feature.icon className="h-6 w-6 text-gold" />
                 </div>
 
@@ -152,9 +148,6 @@ export default function LandingPage() {
                 <p className="mt-3 text-sm leading-relaxed text-warm-gray">
                   {feature.description}
                 </p>
-
-                {/* Decorative corner */}
-                <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-gold/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             ))}
           </div>
@@ -163,11 +156,8 @@ export default function LandingPage() {
 
       {/* CTA */}
       <section className="relative overflow-hidden py-28">
-        {/* Background diagonal stripe */}
-        <div className="absolute inset-0 barber-stripe opacity-[0.02]" />
-
         <div className="container relative mx-auto max-w-3xl px-6 text-center">
-          <h2 className="font-serif text-3xl tracking-tight md:text-5xl text-cream">
+          <h2 className="font-sans font-bold text-3xl tracking-tight md:text-5xl text-cream">
             Ready to stop losing customers?
           </h2>
           <p className="mt-6 text-lg text-warm-gray leading-relaxed">
@@ -178,14 +168,11 @@ export default function LandingPage() {
             <Button
               size="lg"
               asChild
-              className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-none px-12 py-6 text-sm uppercase tracking-[0.15em]"
+              className="bg-gold text-primary-foreground font-semibold hover:bg-gold-light rounded-full px-12 py-6 text-sm uppercase tracking-wide"
             >
               <Link href="/signup">Start Free Trial</Link>
             </Button>
           </div>
-
-          {/* Decorative barber stripe */}
-          <div className="mx-auto mt-16 barber-stripe-thin h-1 w-32 opacity-40 rounded-full" />
         </div>
       </section>
     </>
