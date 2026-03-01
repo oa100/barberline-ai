@@ -21,8 +21,8 @@ export default async function SettingsPage() {
       <SettingsForm
         initialData={{
           name: shop.name,
-          timezone: shop.timezone ?? "America/New_York",
-          greeting: shop.ai_greeting ?? null,
+          timezone: shop.timezone ?? "America/Chicago",
+          greeting: shop.greeting ?? null,
         }}
       />
     </div>

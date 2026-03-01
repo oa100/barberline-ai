@@ -10,7 +10,7 @@ const SCOPES = [
   "MERCHANT_PROFILE_READ",
 ];
 
-export async function GET() {
+export async function GET(req: Request) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -18,6 +18,10 @@ export async function GET() {
 
   const rl = rateLimit(`square-oauth:${userId}`, { limit: 5, windowMs: 60_000 });
   if (!rl.success) return rateLimitResponse();
+
+  // Store returnTo so callback can redirect back to the right page
+  const url = new URL(req.url);
+  const returnTo = url.searchParams.get("returnTo");
 
   const clientId = process.env.SQUARE_APP_ID!;
   const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/square/callback`;
@@ -39,6 +43,16 @@ export async function GET() {
     maxAge: 600, // 10 minutes
     path: "/",
   });
+
+  if (returnTo) {
+    cookieStore.set("square_oauth_return_to", returnTo, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 600,
+      path: "/",
+    });
+  }
 
   const params = new URLSearchParams({
     client_id: clientId,

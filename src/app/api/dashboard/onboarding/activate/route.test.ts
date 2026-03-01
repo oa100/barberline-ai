@@ -28,8 +28,13 @@ vi.mock("@/lib/supabase/server", () => {
   };
 });
 
+vi.mock("@/lib/vapi/create-agent", () => ({
+  createVapiAgent: vi.fn(),
+}));
+
 import { POST } from "./route";
 import { auth } from "@clerk/nextjs/server";
+import { createVapiAgent } from "@/lib/vapi/create-agent";
 // @ts-expect-error __mocks injected by vi.mock
 import { __mocks } from "@/lib/supabase/server";
 
@@ -50,8 +55,12 @@ describe("POST /api/dashboard/onboarding/activate", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(auth).mockResolvedValue({ userId: "user_123" } as never);
-    mockSingle.mockResolvedValue({ data: { id: "shop_1" }, error: null });
+    mockSingle.mockResolvedValue({
+      data: { id: "shop_1", name: "Test Shop" },
+      error: null,
+    });
     mockUpdateEq.mockResolvedValue({ error: null });
+    vi.mocked(createVapiAgent).mockResolvedValue({ id: "vapi_agent_123" });
   });
 
   it("returns 401 when not authenticated", async () => {
@@ -73,13 +82,33 @@ describe("POST /api/dashboard/onboarding/activate", () => {
     expect(res.status).toBe(404);
   });
 
-  it("saves greeting and activates successfully", async () => {
+  it("creates vapi agent and activates successfully", async () => {
     const res = await POST(
       makeRequest({ shopId: "shop_1", greeting: "Welcome to my shop!" })
     );
     expect(res.status).toBe(200);
 
     const body = await res.json();
-    expect(body).toEqual({ ok: true });
+    expect(body).toEqual({ ok: true, agentId: "vapi_agent_123" });
+
+    expect(createVapiAgent).toHaveBeenCalledWith({
+      shopId: "shop_1",
+      shopName: "Test Shop",
+      greeting: "Welcome to my shop!",
+    });
+  });
+
+  it("returns 500 when vapi agent creation fails", async () => {
+    vi.mocked(createVapiAgent).mockRejectedValue(
+      new Error("Failed to create Vapi agent: API error")
+    );
+
+    const res = await POST(
+      makeRequest({ shopId: "shop_1", greeting: "Welcome!" })
+    );
+    expect(res.status).toBe(500);
+
+    const body = await res.json();
+    expect(body.error).toContain("Failed to create Vapi agent");
   });
 });

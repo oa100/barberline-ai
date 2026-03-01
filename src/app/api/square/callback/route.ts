@@ -29,8 +29,10 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // Clean up the CSRF cookie
+  // Clean up the CSRF cookie and read returnTo
   cookieStore.delete("square_oauth_state");
+  const returnTo = cookieStore.get("square_oauth_return_to")?.value;
+  cookieStore.delete("square_oauth_return_to");
 
   try {
     // Create a Square client without an access token for the OAuth exchange
@@ -50,6 +52,8 @@ export async function GET(req: NextRequest) {
     });
 
     const accessToken = tokenResponse.accessToken;
+    const refreshToken = tokenResponse.refreshToken;
+    const expiresAt = tokenResponse.expiresAt;
     if (!accessToken) {
       throw new Error("No access token returned from Square");
     }
@@ -74,6 +78,8 @@ export async function GET(req: NextRequest) {
       .update({
         provider_type: "square",
         provider_token: encrypt(accessToken),
+        provider_refresh_token: refreshToken ? encrypt(refreshToken) : null,
+        provider_token_expires_at: expiresAt || null,
         provider_location_id: locationId,
       })
       .eq("clerk_user_id", userId);
@@ -82,6 +88,13 @@ export async function GET(req: NextRequest) {
       console.error("Failed to update shop record:", updateError);
       return NextResponse.redirect(
         `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings/integrations?error=db_update_failed`
+      );
+    }
+
+    // Redirect back to onboarding step 3 if coming from onboarding, else integrations page
+    if (returnTo?.startsWith("/dashboard/onboarding")) {
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/onboarding?step=3`
       );
     }
 

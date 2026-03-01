@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface SettingsFormProps {
   initialData: {
@@ -21,11 +22,18 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
   async function handleSave() {
     setSaving(true);
     try {
-      await fetch("/api/dashboard/settings", {
+      const res = await fetch("/api/dashboard/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, timezone }),
       });
+      if (res.ok) {
+        toast.success("Settings saved.");
+      } else {
+        toast.error("Failed to save settings.");
+      }
+    } catch {
+      toast.error("Network error. Please try again.");
     } finally {
       setSaving(false);
     }

@@ -16,9 +16,6 @@ vi.mock("@vapi-ai/web", () => ({
 
 const defaultProps = {
   shopId: "shop_1",
-  shopName: "Fresh Cuts",
-  greeting: "Welcome to Fresh Cuts!",
-  timezone: "America/New_York",
 };
 
 describe("TalkToAgentButton", () => {
@@ -48,6 +45,20 @@ describe("TalkToAgentButton", () => {
   });
 
   it("shows connecting state when call starts", async () => {
+    // Mock fetch for the vapi-token endpoint
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          assistant: {
+            name: "Test AI",
+            firstMessage: "Hello!",
+            model: { provider: "openai", model: "gpt-4o", messages: [] },
+            voice: { provider: "11labs", voiceId: "test" },
+          },
+        }),
+    });
+
     render(<TalkToAgentButton {...defaultProps} />);
     fireEvent.click(screen.getByRole("button", { name: /Talk to Agent/i }));
 

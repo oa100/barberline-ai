@@ -6,17 +6,9 @@ import { Button } from "@/components/ui/button";
 
 interface TalkToAgentButtonProps {
   shopId: string;
-  shopName: string;
-  greeting: string | null;
-  timezone: string;
 }
 
-export function TalkToAgentButton({
-  shopId,
-  shopName,
-  greeting,
-  timezone,
-}: TalkToAgentButtonProps) {
+export function TalkToAgentButton({ shopId }: TalkToAgentButtonProps) {
   const [status, setStatus] = useState<
     "idle" | "connecting" | "active" | "ending"
   >("idle");
@@ -26,9 +18,6 @@ export function TalkToAgentButton({
   const [isMuted, setIsMuted] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const vapiRef = useRef<any>(null);
-
-  const defaultGreeting =
-    "Hello! Thanks for calling. I'm the AI assistant for this barbershop. I can help you check available appointment times, book an appointment, or answer questions. How can I help you today?";
 
   const startCall = useCallback(async () => {
     const publicKey = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY;
@@ -41,6 +30,21 @@ export function TalkToAgentButton({
     setTranscript([]);
 
     try {
+      // Fetch sanitized assistant config from server
+      const configRes = await fetch("/api/dashboard/vapi-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ shopId }),
+      });
+
+      if (!configRes.ok) {
+        alert("Failed to load agent configuration. Please try again.");
+        setStatus("idle");
+        return;
+      }
+
+      const { assistant } = await configRes.json();
+
       const { default: Vapi } = await import("@vapi-ai/web");
       const vapi = new Vapi(publicKey);
       vapiRef.current = vapi;
@@ -72,50 +76,23 @@ export function TalkToAgentButton({
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vapi.on("error", (error: any) => {
-        console.error("Vapi error:", error);
+        const msg =
+          (typeof error?.error === "string" && error.error) ||
+          error?.error?.message ||
+          error?.message ||
+          "Connection failed. Please try again.";
+        console.error("Vapi error:", { type: error?.type, stage: error?.stage, error: error?.error });
+        alert(`Call failed: ${msg}`);
         setStatus("idle");
         vapiRef.current = null;
       });
 
-      await vapi.start({
-        name: `${shopName} AI Receptionist`,
-        firstMessage: greeting || defaultGreeting,
-        model: {
-          provider: "openai",
-          model: "gpt-4o",
-          temperature: 0.7,
-          messages: [
-            {
-              role: "system",
-              content: `You are a friendly AI receptionist for "${shopName}", a barbershop. Your job is to:
-1. Answer questions about the shop (hours, services, pricing)
-2. Help callers book appointments
-3. Handle rescheduling and cancellations
-4. Take messages if needed
-
-Shop details:
-- Name: ${shopName}
-- Timezone: ${timezone}
-- Hours: Monday-Saturday 9 AM to 7 PM
-- Services: Classic Fade ($35), Beard Trim ($20), Hot Towel Shave ($30), Line Up ($15), Full Cut + Beard ($50), Kids Cut ($25)
-
-Be warm, professional, and conversational. Keep responses concise since this is a voice call.`,
-            },
-          ],
-        },
-        voice: {
-          provider: "11labs",
-          voiceId: "21m00Tcm4TlvDq8ikWAM",
-        },
-        metadata: {
-          shopId,
-        },
-      });
+      await vapi.start(assistant);
     } catch (err) {
       console.error("Failed to start call:", err);
       setStatus("idle");
     }
-  }, [shopId, shopName, greeting, timezone, defaultGreeting]);
+  }, [shopId]);
 
   const endCall = useCallback(() => {
     setStatus("ending");

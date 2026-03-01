@@ -21,6 +21,10 @@ import { __mocks } from "next/headers";
 
 const { mockSet } = __mocks as { mockSet: ReturnType<typeof vi.fn> };
 
+function makeRequest(url = "http://localhost/api/square/oauth") {
+  return new Request(url);
+}
+
 describe("GET /api/square/oauth", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -33,12 +37,12 @@ describe("GET /api/square/oauth", () => {
   it("returns 401 when not authenticated", async () => {
     vi.mocked(auth).mockResolvedValue({ userId: null } as never);
 
-    const res = await GET();
+    const res = await GET(makeRequest());
     expect(res.status).toBe(401);
   });
 
   it("generates a CSRF state token and sets it as an HttpOnly cookie", async () => {
-    const res = await GET();
+    const res = await GET(makeRequest());
 
     // Should redirect to Square
     expect(res.status).toBe(307);
@@ -64,9 +68,28 @@ describe("GET /api/square/oauth", () => {
   });
 
   it("does NOT use userId directly as the state parameter", async () => {
-    const res = await GET();
+    const res = await GET(makeRequest());
     const redirectUrl = res.headers.get("location")!;
     const url = new URL(redirectUrl);
     expect(url.searchParams.get("state")).not.toBe("user_123");
+  });
+
+  it("stores returnTo cookie when returnTo param is provided", async () => {
+    const res = await GET(
+      makeRequest("http://localhost/api/square/oauth?returnTo=/dashboard/onboarding")
+    );
+    expect(res.status).toBe(307);
+
+    expect(mockSet).toHaveBeenCalledWith(
+      "square_oauth_return_to",
+      "/dashboard/onboarding",
+      expect.objectContaining({
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        maxAge: 600,
+        path: "/",
+      })
+    );
   });
 });
