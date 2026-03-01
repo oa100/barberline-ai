@@ -3,6 +3,7 @@ import { DM_Sans, Instrument_Serif } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ServiceWorkerRegister } from "@/components/sw-register";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { clerkAppearance } from "@/app/(auth)/clerk-theme";
 import "./globals.css";
 
@@ -54,6 +55,7 @@ export default function RootLayout({
           <ThemeProvider>
             {children}
             <ServiceWorkerRegister />
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

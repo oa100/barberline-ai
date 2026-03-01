@@ -11,21 +11,72 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+
+const US_TIMEZONES = [
+  { label: "Eastern (ET)", value: "America/New_York" },
+  { label: "Central (CT)", value: "America/Chicago" },
+  { label: "Mountain (MT)", value: "America/Denver" },
+  { label: "Pacific (PT)", value: "America/Los_Angeles" },
+  { label: "Alaska (AKT)", value: "America/Anchorage" },
+  { label: "Hawaii (HT)", value: "Pacific/Honolulu" },
+];
 
 interface OnboardingStepsProps {
   shopId: string;
+  shopName: string;
   hasSquare: boolean;
+  initialStep?: number;
 }
 
 const DEFAULT_GREETING =
   "Hello! Thanks for calling. I'm the AI assistant for this barbershop. I can help you check available appointment times, book an appointment, or take a message for the barber. How can I help you today?";
 
-export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
-  const [currentStep, setCurrentStep] = useState(hasSquare ? 2 : 1);
+function computeInitialStep(hasSquare: boolean, initialStep?: number): number {
+  if (initialStep && initialStep >= 1 && initialStep <= 4) return initialStep;
+  if (hasSquare) return 3;
+  return 1;
+}
+
+export function OnboardingSteps({
+  shopId,
+  shopName: initialShopName,
+  hasSquare,
+  initialStep,
+}: OnboardingStepsProps) {
+  const [currentStep, setCurrentStep] = useState(() =>
+    computeInitialStep(hasSquare, initialStep)
+  );
+  const [shopName, setShopName] = useState(initialShopName || "");
+  const [timezone, setTimezone] = useState("America/Chicago");
   const [greeting, setGreeting] = useState(DEFAULT_GREETING);
   const [activating, setActivating] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [savingShopDetails, setSavingShopDetails] = useState(false);
+
+  async function handleSaveShopDetails() {
+    if (!shopName.trim()) {
+      toast.error("Please enter your shop name.");
+      return;
+    }
+    setSavingShopDetails(true);
+    try {
+      const res = await fetch("/api/dashboard/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: shopName.trim(), timezone }),
+      });
+      if (!res.ok) {
+        toast.error("Failed to save shop details. Please try again.");
+        return;
+      }
+      setCurrentStep(2);
+    } finally {
+      setSavingShopDetails(false);
+    }
+  }
 
   async function handleActivate() {
     setActivating(true);
@@ -38,7 +89,12 @@ export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
 
       if (response.ok) {
         setCompleted(true);
+      } else {
+        const data = await response.json().catch(() => ({}));
+        toast.error(data.error || "Activation failed. Please try again.");
       }
+    } catch {
+      toast.error("Network error. Please check your connection and try again.");
     } finally {
       setActivating(false);
     }
@@ -63,7 +119,7 @@ export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
 
   return (
     <div className="space-y-4">
-      {/* Step 1: Connect Square */}
+      {/* Step 1: Shop Details */}
       <Card className={currentStep > 1 ? "opacity-60" : ""}>
         <CardHeader>
           <div className="flex items-center gap-3">
@@ -75,6 +131,66 @@ export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
               </span>
             )}
             <div>
+              <CardTitle>Shop Details</CardTitle>
+              <CardDescription>
+                Tell us about your barbershop so your AI receptionist knows what
+                to say.
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        {currentStep === 1 && (
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="shopName">Shop Name</Label>
+              <Input
+                id="shopName"
+                value={shopName}
+                onChange={(e) => setShopName(e.target.value)}
+                placeholder="e.g. King's Cuts Barbershop"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="timezone">Timezone</Label>
+              <select
+                id="timezone"
+                value={timezone}
+                onChange={(e) => setTimezone(e.target.value)}
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              >
+                {US_TIMEZONES.map((tz) => (
+                  <option key={tz.value} value={tz.value}>
+                    {tz.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Button
+              onClick={handleSaveShopDetails}
+              disabled={savingShopDetails}
+            >
+              {savingShopDetails ? "Saving..." : "Next"}
+            </Button>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Step 2: Connect Square */}
+      <Card
+        className={
+          currentStep < 2 ? "opacity-40" : currentStep > 2 ? "opacity-60" : ""
+        }
+      >
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            {currentStep > 2 ? (
+              <CheckCircle className="size-6 text-green-500" />
+            ) : (
+              <span className="flex size-6 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                2
+              </span>
+            )}
+            <div>
               <CardTitle>Connect Square</CardTitle>
               <CardDescription>
                 Link your Square account to sync your calendar and accept
@@ -83,27 +199,33 @@ export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
             </div>
           </div>
         </CardHeader>
-        {currentStep === 1 && (
+        {currentStep === 2 && (
           <CardContent className="flex gap-3">
             <Button asChild>
-              <a href="/api/square/oauth">Connect Square Account</a>
+              <a href="/api/square/oauth?returnTo=/dashboard/onboarding">
+                Connect Square Account
+              </a>
             </Button>
-            <Button variant="outline" onClick={() => setCurrentStep(2)}>
+            <Button variant="outline" onClick={() => setCurrentStep(3)}>
               Skip for now
             </Button>
           </CardContent>
         )}
       </Card>
 
-      {/* Step 2: Customize AI Greeting */}
-      <Card className={currentStep < 2 ? "opacity-40" : currentStep > 2 ? "opacity-60" : ""}>
+      {/* Step 3: Customize AI Greeting */}
+      <Card
+        className={
+          currentStep < 3 ? "opacity-40" : currentStep > 3 ? "opacity-60" : ""
+        }
+      >
         <CardHeader>
           <div className="flex items-center gap-3">
-            {currentStep > 2 ? (
+            {currentStep > 3 ? (
               <CheckCircle className="size-6 text-green-500" />
             ) : (
               <span className="flex size-6 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                2
+                3
               </span>
             )}
             <div>
@@ -115,7 +237,7 @@ export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
             </div>
           </div>
         </CardHeader>
-        {currentStep === 2 && (
+        {currentStep === 3 && (
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="greeting">AI Greeting Message</Label>
@@ -126,17 +248,17 @@ export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
                 rows={4}
               />
             </div>
-            <Button onClick={() => setCurrentStep(3)}>Next</Button>
+            <Button onClick={() => setCurrentStep(4)}>Next</Button>
           </CardContent>
         )}
       </Card>
 
-      {/* Step 3: Go Live */}
-      <Card className={currentStep < 3 ? "opacity-40" : ""}>
+      {/* Step 4: Go Live */}
+      <Card className={currentStep < 4 ? "opacity-40" : ""}>
         <CardHeader>
           <div className="flex items-center gap-3">
             <span className="flex size-6 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-              3
+              4
             </span>
             <div>
               <CardTitle>Go Live</CardTitle>
@@ -146,7 +268,7 @@ export function OnboardingSteps({ shopId, hasSquare }: OnboardingStepsProps) {
             </div>
           </div>
         </CardHeader>
-        {currentStep === 3 && (
+        {currentStep === 4 && (
           <CardContent>
             <Button onClick={handleActivate} disabled={activating}>
               {activating ? "Activating..." : "Activate AI Receptionist"}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function VoiceSettingsPage() {
   const [greeting, setGreeting] = useState("");
@@ -16,7 +17,7 @@ export default function VoiceSettingsPage() {
         const res = await fetch("/api/dashboard/settings");
         if (res.ok) {
           const data = await res.json();
-          setGreeting(data.ai_greeting ?? "");
+          setGreeting(data.greeting ?? "");
         }
       } finally {
         setLoading(false);
@@ -28,11 +29,18 @@ export default function VoiceSettingsPage() {
   async function handleSave() {
     setSaving(true);
     try {
-      await fetch("/api/dashboard/settings", {
+      const res = await fetch("/api/dashboard/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ greeting }),
       });
+      if (res.ok) {
+        toast.success("Voice settings saved.");
+      } else {
+        toast.error("Failed to save voice settings.");
+      }
+    } catch {
+      toast.error("Network error. Please try again.");
     } finally {
       setSaving(false);
     }

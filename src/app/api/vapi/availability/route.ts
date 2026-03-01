@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const provider = getBookingProvider(shop);
+    const provider = await getBookingProvider(shop);
 
     const slots = await provider.checkAvailability({ date, serviceId, staffId });
 
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
           hour: "numeric",
           minute: "2-digit",
           hour12: true,
-          timeZone: shop.timezone || "America/New_York",
+          timeZone: shop.timezone || "America/Chicago",
         });
       })
       .join(", ");

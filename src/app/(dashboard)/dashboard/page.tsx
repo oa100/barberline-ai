@@ -60,12 +60,7 @@ export default async function DashboardPage() {
           Here&apos;s an overview of {shop.name} today.
         </p>
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:gap-4">
-          <TalkToAgentButton
-            shopId={shop.id}
-            shopName={shop.name}
-            greeting={shop.greeting}
-            timezone={shop.timezone}
-          />
+          <TalkToAgentButton shopId={shop.id} />
           <SimulateCallButton shopId={shop.id} />
         </div>
       </div>

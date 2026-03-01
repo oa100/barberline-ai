@@ -3,7 +3,11 @@ import { auth } from "@clerk/nextjs/server";
 import { createClient } from "@/lib/supabase/server";
 import { OnboardingSteps } from "@/components/dashboard/onboarding-steps";
 
-export default async function OnboardingPage() {
+export default async function OnboardingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ step?: string }>;
+}) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -26,7 +30,7 @@ export default async function OnboardingPage() {
       .insert({
         clerk_user_id: userId,
         name: "My Barbershop",
-        timezone: "America/New_York",
+        timezone: "America/Chicago",
       })
       .select()
       .single();
@@ -52,6 +56,8 @@ export default async function OnboardingPage() {
   }
 
   const hasSquare = Boolean(shop.provider_token);
+  const params = await searchParams;
+  const initialStep = params.step ? parseInt(params.step, 10) : undefined;
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">
@@ -62,7 +68,12 @@ export default async function OnboardingPage() {
         </p>
       </div>
 
-      <OnboardingSteps shopId={shop.id} hasSquare={hasSquare} />
+      <OnboardingSteps
+        shopId={shop.id}
+        shopName={shop.name}
+        hasSquare={hasSquare}
+        initialStep={initialStep}
+      />
     </div>
   );
 }
